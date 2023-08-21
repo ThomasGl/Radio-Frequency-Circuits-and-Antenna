@@ -1,0 +1,231 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{bookmark}
+\usepackage{physics}
+\usepackage{cancel}
+\input{insbox}
+\usepackage{titling}
+\usepackage{xcolor}
+\usepackage{circuitikz}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+\usetikzlibrary{arrows, automata}
+
+
+\makeatletter
+\pdfstringdefDisableCommands{\let\HyPsd@CatcodeWarning\@gobble}
+\makeatother
+
+\title{
+  \Large $\textbf{Radio Frequency Circuits \& Antenna}$
+}
+\author{
+  $\textbf{Thomas Glezer}$\\
+  $\textbf{Tel Aviv University}$\\\\
+  ---\\\\
+  $\textbf{Homework: 9}$\\
+}
+\date{\today}
+
+
+\begin{document}
+
+\begin{titlingpage}
+  \maketitle
+\end{titlingpage}
+
+\section{The following small signal model describes a CMOS amplifier:}
+
+\begin{itemize}
+  \item [i.] Find $f_t$ and $f_{max}$ of the transistor at the given operating point, assuming that $C_{gs}$=15[fF], $C_{gd}$=5[fF], $R_g$=5W, the overdrive voltage $(V_{GS}-V_{TH})$ is 0.2V, the current $I_D$ at the operating point is given by: $I_D = k(V_{GS}-V_{TH})^2$ with k=0.05$[mA/V^2]$, the voltage supply is $V_{DD}=0.9V$ and the IV curve of the transistor is given by the following figure:
+
+  {\color{blue}The transistor is saturated: $V_{ds}>V_{od}$:}
+  \begin{align}
+    f_t={g_m\over2\pi(C_{gs}+C_{gd})}, \quad g_m&={2I_d\over V_{od}}={2(0.54\cdot10^{-3})\over0.2}=5.4[m\Omega^{-1}]
+    \\
+    f_t&={5.4[m\Omega^{-1}]\over2\pi(20[fF])}=43[GHz]
+  \end{align}
+
+  \begin{align}
+    f_{max}
+    =
+    {f_t\over\sqrt{2\pi f_tC_{gd}R_g+R_g/r_o}}
+  \end{align}
+
+  {\color{blue}Solving for $r_o$, using linear equation relations:}
+
+  \begin{align}
+    {x-0.8\over 0.8-1}={y-0.52\over 0.52-0.55}
+    \\
+    y={3\over20}(x-0.8)+0.52
+    \\
+    0={3\over20}(x-0.8)+0.52
+    \\
+    -0.52\cdot20/3=x-0.8
+    \\
+    -0.52\cdot20/3+0.8=x
+    \\
+    \therefore V_a=-2.667[V]
+    \\
+    r_o={|V_a|\over I_d}={2.66\over 0.52}=5.13[k\Omega]
+  \end{align}
+
+  \begin{align}
+    \therefore
+    f_{max}={43\cdot10^9\over\sqrt{2\pi\cdot43\cdot10^9\cdot5\cdot10^{-15}\cdot5+5/5130}}=489.1[GHz]
+  \end{align}
+
+  \item [ii.] Repeat Section i above, assuming now that $C_{gd}$ can be neglected. What is the error (in percentages) between the exact calculation and the approximated one?
+
+  \begin{align}
+    f_t=57.3\rightarrow \delta=33.25\%
+    \\
+    f_{max}=342.57\rightarrow \delta=42.77\%
+  \end{align}
+
+  \item [iii.] Repeat Section i above, assuming now that the width of the transistor (W) has twice the size than it had in Section i. In your calculations specify what parameters are affected by this change, and why.
+
+  {\color{blue} $I_D$ will double as it has a direct proportional relation to it, but $f_t$ will remain the same as: $C_{gs}=2/3C_{ox}\cdot W/L$, and $C_{gd}=1/3C_{ox}\cdot W/L$. We can then induce that $f_t$ will be the same value, and $f_{max}$, will decay by a factor close to $1/\sqrt{2}$.}
+
+  \item [iv.] Repeat Section i above, assuming now that the number of fingers of the transistor (N) has twice the size than it had in Section i. In your calculations specify what parameters are affected by this change, and why.
+  
+  {\color{blue}Similar to the previous question we get the same relations as before but now for a factor of $N$, which implies that $f_t$ won't change, and $f_{max}$, reduces by $1/\sqrt{N}$.}
+\end{itemize}
+
+\section{For the small signal model of the transistor that is given in Question 1 Section i above, design an octagonal inductor that will match the output of the transistor to 50$\Omega$ at 10GHz, assuming that the inductor is implemented by a top metal layer made of copper (conductivity of $\sigma=5.96\cdot10^7 [S/m]$) with a cross section of 2mm x 2mm, surrounded by Silicon Dioxide with $\varepsilon_r=4.1$. The inductor should include 2 windings (turns) with a spacing of 1mm between them. Follow the steps below:}
+
+\begin{itemize}
+  \item [i.] Find the required inductance for the matching.
+  
+  \begin{align}
+    Z_{in}
+    =
+    \Bigl(
+      (R_l+jX_l)
+      ||{1\over j\omega C_l}+j\omega L
+    \Bigr)||{1\over j\omega C_s}
+  \end{align}
+
+  {\color{blue}Then for matching we get: }
+
+  \begin{align}
+    L=5.39[nH], \quad C=32[fF]
+  \end{align}
+
+  \item [ii.] What is the approximated area of the inductor?
+
+  {\color{blue}Approximated area $=d_{out}^2$, then we can elaborated as follows:}
+
+  \begin{align}
+    L&={K_1\mu \cdot n^2 d_{avg}\over 1+K_2\rho}
+    \\
+    d_{avg}&={d_{out}+d_{in}\over2}, \quad \rho={d_{out}-d_{in}\over d_{out}+d_{in}}
+    \\
+    d_{in}&=d_{out}-0.01[\mu m]
+  \end{align}
+
+  {\color{blue}We can then see that the solution for $d_{out}=0.517[\mu m]\quad\therefore \quad A\approxeq0.267[\mu m^2]$}
+
+  \item [iii.] What is the Q factor of the inductor?
+
+  {\color{blue}Let us assume \textit{a} to be the outwards side of the octagon and \textit{b} to the inner side of the octagon, then:}
+
+  \begin{align}
+    d_{out}=a(1+\sqrt{2}), \quad d_{in}=b(1+\sqrt{b})
+    \\
+    a=214.15[\mu m], \quad b=210[\mu m]
+  \end{align}
+  \begin{align}
+    l=8(a+b)&=3393.22[\mu m]
+    \\
+    \delta=\sqrt{2\over\sigma\mu\omega}&=0.65[\mu m]
+    \\
+    A_{skin}=4-0.49&=3.51[@m m^2]
+    \\
+    R={l\over\rho A_{skin}}&=16.21[\Omega]
+    \\
+    Q={2\pi fL\over R}=19
+  \end{align}
+
+  \item [iv.] Estimate is the SRF of the inductor, assuming that only the parasitic capacitance between the windings affects the SRF.
+  
+  {\color{blue}Assuming cylindrical form for the capacitor:}
+
+  \begin{align}
+    C={2\pi\varepsilon_r\varepsilon_0L\over\ln[d_{out}/d_{in}]}=[26fF]
+    \\
+    SRF={1\over2\pi\sqrt{LC}}=14[GHz]
+  \end{align}
+\end{itemize}
+
+\section{What will be the insertion loss of a mixer based on a switch if the LO signal will be a rectangular waveform with a duty cycle of 33\%? (meaning, the pulse width is T and the total time period is 3T).}
+
+{\color{blue}We know that the F.T. of a rectangular pulse with 1/3 duty cylce is given by:}
+
+\begin{align}
+  \mathcal{F}(\omega)=\sum^{\infty}_{n=\infty}{4\over n}\sin({n\pi\over3})\delta\Big(\omega-{2\pi n\over 3T}\Big)
+\end{align}
+
+{\color{blue}Then using coeff with value 1 we get the insertion loss as follows:}
+
+\begin{align}
+  IL=20\log(4\sin({\pi\over3}))=10.79[dB]
+\end{align}
+
+\pagebreak
+\section{An RF switch is implemented by the resistor that is presented in figure 1 (biased with an overdrive voltage of 0.2V).}
+
+\begin{itemize}
+  \item [i.] Find the $R_{on}$ of a switch.
+
+  {\color{blue}Through graphical analysis we know that and knowing that $R_{on}$ is given by 1/slope relation:}
+
+  \begin{align}
+    R_{on}=700[\Omega]
+  \end{align}
+
+  \item [ii.] What can be done in order to lower this resistance to 10$\Omega$ or below?
+
+  {\color{blue}As $R_{on}$ has a a inverse relation to $V_{od}$ we could increase it's value until such condition is satisfied. Something else, which is bounded by chip design technology and architecture would be to increase W, but we normally would avoid it for consuming space and deteriorating other parameters.}
+
+  \item [iii.] What will be the insertion loss of the switch if Ron will be 10$\Omega$?
+
+  {\color{blue} If we ignore the parasitic capacitance:}
+
+  \begin{align}
+    \underline{\underline{R}}
+    =
+    \begin{bmatrix}
+      1 & 10\\
+      0 & 1
+    \end{bmatrix}
+  \end{align}
+
+  \begin{align}
+    S_{21}={2\over A+B/Z_0+C\cdot Z_0+D}={10\over 11}
+  \end{align}
+
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,193 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{bookmark}
+\usepackage{physics}
+\usepackage{cancel}
+\input{insbox}
+\usepackage{titling}
+\usepackage{xcolor}
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+\usetikzlibrary{arrows, automata}
+
+
+\makeatletter
+\pdfstringdefDisableCommands{\let\HyPsd@CatcodeWarning\@gobble}
+\makeatother
+
+\title{
+  \Large $\textbf{Radio Frequency Circuits \& Antenna}$
+}
+\author{
+  $\textbf{Thomas Glezer}$\\
+  $\textbf{Tel Aviv University}$\\\\
+  ---\\\\
+  $\textbf{Homework: 3}$\\
+}
+\date{\today}
+
+
+
+\begin{document}
+
+\begin{align}
+  \va*{A}
+  &=
+  \mu I_ml
+  {e^{-jkr}\over 4\pi r}
+  \vu*{z}
+\end{align}
+
+\begin{align}
+  \vu*{z}
+  &=
+  \cos\theta\cdot\vu*{r}
+  -
+  \sin\theta\cdot\vu*{\theta}
+\end{align}
+
+\vspace{1em}
+
+\begin{center}
+  Thus, plugging $(2)\rightarrow(1)$
+\end{center}
+
+\vspace{1em}
+
+\begin{align}
+  \va*{A}
+  &=
+  \mu I_ml
+  {e^{-jkr}\over 4\pi r}
+  [
+    \cos\theta\cdot\vu*{r}
+  -
+  \sin\theta\cdot\vu*{\theta}
+  ]
+\end{align}
+
+\begin{align}
+  \va*{H}
+  &=
+  \curl\va*{A_T}
+\end{align}
+
+\begin{align}
+  \va*{H}_r
+  &=
+  0
+\end{align}
+
+\begin{align}
+  \va*{H}_\theta
+  &=
+  {\mu I_ml\over4\pi}{1\over r}
+  \Bigl(
+    {1\over\sin\theta}
+    \cancelto{0}{\pdv{A_r}{\varphi}}
+    -
+    \pdv{(r\cdot \cancelto{0}{A_\varphi})}{r}
+  \Bigr)
+  =
+  0
+\end{align}
+
+\begin{align}
+  \va*{H}_\varphi
+  &=
+  {\mu I_ml\over4\pi}{1\over r}
+  \Bigl(
+    \pdv{(r\cdot A_\theta)}{r}
+    -
+    \pdv{A_r}{\theta}
+  \Bigr)
+  \\
+  &=
+  {\mu I_ml\over4\pi}{1\over r}
+  \Biggl(
+    \pdv{r}(r{e^{-jkr}\over r}(-\sin\theta))
+    -
+    \pdv{\theta}({e^{-jkr}\over r}(\cos\theta))
+  \Biggr)
+  \\
+  &=
+  {\mu I_ml\over4\pi}{1\over r}
+  \Biggl(
+    \pdv{r}(e^{-jkr}(-\sin\theta))
+    -
+    \pdv{\theta}({e^{-jkr}\over  r}(\cos\theta))
+  \Biggr)
+  \\
+  &=
+  {\mu I_ml\over4\pi}{1\over r}
+  \Biggl(
+    jk(e^{-jkr}\sin\theta)
+    -
+    ({e^{-jkr}\over  r}(-\sin\theta))
+  \Biggr)
+  \\
+  \va*{H}_\varphi
+  &=
+  \mu I_ml{e^{-jkr}\over4\pi r}(jk+{1\over r})\sin\theta\cdot\vu*{\varphi}
+\end{align}
+
+\pagebreak
+
+\begin{align}
+  \va*{E}
+  &=
+  {1\over j\omega\varepsilon}
+  \curl\va*{H}
+\end{align}
+
+\begin{align}
+  \va*{E}_r
+  &=
+  {\mu I_ml\over j\omega\varepsilon}
+  {1\over4\pi}
+  {1\over r\sin\theta}
+  \Bigl(
+    \pdv{(H_\varphi\sin\theta)}{\theta}
+    -
+    \pdv{\cancelto{0}{H_\theta}}{\varphi}
+  \Bigr)
+  \\
+  &=
+  {\mu I_ml\over j\omega\varepsilon}
+  {1\over4\pi}
+  {1\over r\sin\theta}
+  \Bigl(
+    \pdv{\theta}({e^{-jkr}\over r}(jk+1/r)\sin[2](\theta))
+  \Bigr)
+  \\
+  &=
+  {\mu I_ml\over j\omega\varepsilon}
+  {e^{-jkr}\over4\pi r^2}(jk+1/r)
+  {1\over \sin\theta}
+  2\cos\theta\sin\theta
+  \\
+  \va*{E}_r
+  &=
+  2{\mu I_ml\over j\omega\varepsilon}
+  {e^{-jkr}\over4\pi r^2}(jk+1/r)
+  \cos\theta
+  \cdot
+  \vu*{r}
+\end{align}
+
+
+\end{document}

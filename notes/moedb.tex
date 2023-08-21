@@ -1,0 +1,96 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{bookmark}
+\usepackage{physics}
+\usepackage{cancel}
+\input{insbox}
+\usepackage{titling}
+\usepackage{xcolor}
+\usepackage{circuitikz}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+\usetikzlibrary{arrows, automata}
+
+
+\makeatletter
+\pdfstringdefDisableCommands{\let\HyPsd@CatcodeWarning\@gobble}
+\makeatother
+
+
+\begin{document}
+
+\begin{align}
+    AF(\hat{r})&=\sum_{n=1}^N a_n e^{jk\hat{r}\cdot\va*{r}_n}=\frac{\sin(N\psi/2)}{N\sin(\psi/2)}
+    ,\quad \psi=kd\cos(\theta)=\frac{2\pi}{\lambda}0.7\lambda\cos(\theta)
+    ,\quad \psi_0=1.4\cdot\cos(\theta_0)
+\end{align}
+
+\begin{align}
+    D-D_{new}&=3[db]\rightarrow\frac{D}{D_{new}}=2\\
+    2\cdot D_{new}&=D\\
+    2\frac{4\pi}{P_{rad,new}}&=\frac{4\pi}{P_{rad}}\\
+    P_{rad,new}&=2\cdot P_{rad}\\
+    \int\limits_0^\pi \sin(\theta)AF^2(\theta,\varphi)_{new}\,d\theta
+    &=
+    2\int\limits_0^\pi \sin(\theta)AF^2(\theta,\varphi)\,d\theta\\
+    \int\limits_0^\pi \sin(\theta)\frac{\sin^2(N\psi_{new}/2)}{N^2\sin^2(\psi_{new}/2)}\,d\theta
+    &=
+    2\int\limits_0^\pi \sin(\theta)\frac{\sin^2(N\psi/2)}{N^2\sin^2(\psi/2)}\,d\theta
+    \\
+    \frac{1}{5^2}\int\limits_0^\pi \sin(\theta)\frac{\sin^2(5\cdot1.4\pi(\cos(\theta)+\cos(\theta_0))/2)}{\sin^2(1.4\pi(\cos(\theta)+\cos(\theta_0))/2)}\,d\theta
+    &=
+    \frac{2}{5^2}\int\limits_0^\pi \sin(\theta)\frac{\sin^2(5\cdot1.4\pi\cos(\theta)/2)}{\sin^2(1.4\pi\cos(\theta)/2)}\,d\theta
+    \\
+    \int\limits_0^\pi \sin(\theta)\frac{\sin^2(3.5\pi(\cos(\theta)+\cos(\theta_0)))}{\sin^2(0.7\pi(\cos(\theta)+\cos(\theta_0)))}\,d\theta
+    &=
+    2\int\limits_0^\pi \sin(\theta)\frac{\sin^2(3.5\pi\cos(\theta))}{\sin^2(0.7\pi\cos(\theta))}\,d\theta
+    \\
+    \dv{\theta}
+    \int\limits_0^\pi \sin(\theta)\frac{\sin^2(3.5\pi(\cos(\theta)+\cos(\theta_0)))}{\sin^2(0.7\pi(\cos(\theta)+\cos(\theta_0)))}\,d\theta
+    &=
+    \dv{\theta}
+    2\int\limits_0^\pi \sin(\theta)\frac{\sin^2(3.5\pi\cos(\theta))}{\sin^2(0.7\pi\cos(\theta))}\,d\theta
+    \\
+    \sin(\theta)\frac{\sin^2(3.5\pi(\cos(\theta)+\cos(\theta_0)))}{\sin^2(0.7\pi(\cos(\theta)+\cos(\theta_0)))}
+    &=
+    2\cdot \sin(\theta)\frac{\sin^2(3.5\pi\cos(\theta))}{\sin^2(0.7\pi\cos(\theta))}
+    \\
+    \frac{1}{2}\frac{\sin^2(3.5\pi(\cos(\theta)+\cos(\theta_0)))}{\sin^2(0.7\pi(\cos(\theta)+\cos(\theta_0)))}
+    &=
+    \frac{\sin^2(3.5\pi\cos(\theta))}{\sin^2(0.7\pi\cos(\theta))}
+    \\
+    \arcsin^2(1/2)\frac{(3.5\pi(\cos(\theta)+\cos(\theta_0)))}{(0.7\pi(\cos(\theta)+\cos(\theta_0)))}
+    &=
+    \frac{(3.5\pi\cos(\theta))}{(0.7\pi\cos(\theta))}
+    \\
+    0.274\frac{(3.5\pi(\cos(\theta)+\cos(\theta_0)))}{(0.7\pi(\cos(\theta)+\cos(\theta_0)))}
+    &=
+    \frac{(3.5\pi\cos(\theta))}{(0.7\pi\cos(\theta))}
+    \\
+    \frac{(0.7\pi\cos(\theta))(3.5\pi(\cos(\theta)+\cos(\theta_0)))}{(3.5\pi\cos(\theta))(0.7\pi(\cos(\theta)+\cos(\theta_0)))}
+    &=
+    3.647
+\end{align}
+
+\end{document}

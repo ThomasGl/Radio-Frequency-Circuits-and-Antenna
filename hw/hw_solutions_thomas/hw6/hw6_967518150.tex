@@ -1,0 +1,454 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{bookmark}
+\usepackage{physics}
+\usepackage{cancel}
+\input{insbox}
+\usepackage{titling}
+\usepackage{xcolor}
+\usepackage{circuitikz}
+
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+\usetikzlibrary{arrows, automata}
+
+
+\makeatletter
+\pdfstringdefDisableCommands{\let\HyPsd@CatcodeWarning\@gobble}
+\makeatother
+
+\title{
+  \Large $\textbf{Radio Frequency Circuits \& Antenna}$
+}
+\author{
+  $\textbf{Thomas Glezer}$\\
+  $\textbf{Tel Aviv University}$\\\\
+  ---\\\\
+  $\textbf{Homework: 6}$\\
+}
+\date{\today}
+
+
+
+\begin{document}
+
+\begin{titlingpage}
+  \maketitle
+\end{titlingpage}
+
+\section*{Problem 1}
+
+\subsection{Determine the equivalent noise temperature and noise figure of the receiver system (including the noise temperature of the antenna).}
+
+\begin{align}
+  F_T
+  &=
+  1
+  +
+  T_{tot}/T_0
+\end{align}
+
+\begin{align}
+  G_{rf}
+  =
+  25[dB]
+  \rightarrow
+  316.2
+  \quad&\wedge\quad
+  F_{rf}
+  =
+  3[dB]
+  \rightarrow
+  2
+  \\
+  L
+  =
+  7[dB]
+  \rightarrow
+  5
+  \quad&\wedge\quad
+  F_{m}
+  =
+  8[dB]
+  \rightarrow
+  6.31
+  \\
+  G_{if}
+  =
+  40[dB]
+  \rightarrow
+  10000
+  \quad&\wedge\quad
+  F_{if}
+  =
+  1[dB]
+  \rightarrow
+  1.26
+\end{align}
+
+\begin{align}
+  T_{rf}
+  &=
+  (F_{rf}-1)T_0
+  =
+  (2-1)300=300[K]
+  \\
+  T_m
+  &=
+  (CL-1)T_0
+  =
+  (5-1)300=1200[K]
+  \\
+  T_{if}
+  &=
+  (F_{if}-1)T_0
+  =
+  (1.26-1)300=77.6[K]
+\end{align}
+
+\begin{align}
+  T_{tot}
+  &=
+  T_{rf}
+  +
+  {T_m\over G_{rf}}
+  +
+  {T_{if}CL\over G_{rf}}
+  \\
+  &=
+  300
+  +
+  {1200/316.2}
+  +
+  77.6\cdot5/316.2
+  \\
+  T_{tot}
+  &=
+  305.02[K]
+\end{align}
+
+\begin{align}
+  \therefore
+  F_T
+  &=
+  1
+  +
+  305.02/300
+  =
+  2.0167
+  \rightarrow
+  3.05[dB]
+\end{align}
+
+\subsection{Determine the noise power at the output of receiver system if the bandwidth BW = 100 MHz.}
+
+\begin{align}
+  N_{out}
+  &=
+  KBG_{sys}(T_A+T_{tot})
+\end{align}
+
+\begin{align}
+  T_A
+  &=
+  \eta T_{sky}
+  +
+  (1-\eta)T_{ant}
+  =
+  0.8\cdot100
+  +
+  (1-0.8)\cdot 300
+  =
+  140[K]
+\end{align}
+
+\begin{align}
+  G_{sys}
+  &=
+  G_{rf}+G_{if}-CL
+  =
+  25+40-8
+  =
+  57[dB]
+  \rightarrow
+  501187
+\end{align}
+
+\vspace{1em}
+\begin{center}
+  Thus, combining (13) \& (14) into (12):
+\end{center}
+
+\begin{align}
+  N_{out}
+  &=
+  1.38\cdot10^{-23}
+  \cdot
+  100\cdot 10^3
+  \cdot
+  501187
+  \cdot
+  (140+305.02)
+  \\
+  N_{out}
+  &=
+  3.078\cdot10^{-10}
+  \rightarrow
+  -95.11[dB]
+\end{align}
+
+\subsection{The receiving antenna is a round plate with a radius $a$. Suppose that the effective area of the antenna is equal to 60\% of the physical area of antenna aperture. Calculate the minimal value of $a$ that provides $(S/N)_{out}\ge 20[dB]$.}
+
+\begin{align}
+  S
+  &=
+  {
+    P_t\cdot G
+    \over
+    4\pi r^2
+  }
+  =
+  {
+    100\cdot 10^3
+    \over
+    4\pi (36000\cdot10^3)^2
+  }
+  =
+  6.14\cdot 10^{-12}[W/M^2]
+  \\
+  A_{phys}
+  &=
+  {\lambda^2\over 4\pi}\cdot \text{round plate area}
+  =
+  {300/14\over 4\pi}4\pi a^2
+  =
+  21.42\cdot a^2
+  \\
+  A_{eff}
+  &=
+  e_a
+  A_{phys}
+  G_{sys}
+  =
+  0.6
+  \cdot
+  21.42\cdot a^2
+  \cdot
+  501187
+  =
+  6443835 a^2
+  \\
+  P_{rec}
+  &=
+  A_{eff}S
+  =
+  3.956\cdot a^2\cdot 10^{-5}
+  \rightarrow
+  -44.02+20\log a
+\end{align}
+
+\begin{align}
+  -44.02+20\log a
+  - (-95.11)&\ge 20
+  \\
+  20\log a
+  &\ge
+  -31.09
+  \\
+  \log a
+  &\ge
+  -1.55
+  \\
+  a
+  &=
+  27.9[mm]
+\end{align}
+
+\subsection{The second satellite has the same parameters as the first satellite and it transmits a signal that we wouldn't like to receive and so for us it is considered a noise. The gain of the receiving antenna in the direction of the second satellite is X dB lower than in the direction of the first satellite. Calculate the minimal value of X that guarantees a degradation of signal to noise ratio at the output of the receiver system by not more than 1 dB.}
+
+\begin{align}
+  P_{noise}
+  &=
+  -44.02+20\log a+X
+\end{align}
+
+\begin{align}
+  (S/N)_{normal}&=51.09+20\log a
+\end{align}
+
+\begin{align}
+  51.09+20\log a-(-44.02+20\log a+X)
+  &\le
+  1
+  \\
+  X+7.07
+  &\le
+  1
+  \\
+  X
+  &\le
+  -6.07
+\end{align}
+
+\section*{Problem 2}
+
+\subsection{Find the gain $G_{a1}$ of relay receiving antenna to obtain a 15 dB signal-to-noise ratio at the relay output marked as point 1 in the circle.}
+
+Calculating for noise:
+
+
+\begin{align}
+  N_{out}
+  &=
+  KBG_{sys}(T_A+T_{tot})
+\end{align}
+
+\begin{align}
+  T_A
+  &=
+  \eta T_{sky}
+  +
+  (1-\eta)T_{ant}
+  =
+  0.9\cdot150
+  +
+  (1-0.9)\cdot 300
+  =
+  165[K]
+\end{align}
+
+\begin{align}
+  G_{sys}
+  &=
+  G_1+G_2-CL
+  =
+  30+30-7
+  =
+  53[dB]
+  \rightarrow
+  199526
+\end{align}
+
+\begin{align}
+  G_1
+  =
+  30[dB]
+  \rightarrow
+  1000
+  \quad&\wedge\quad
+  F_1
+  =
+  2[dB]
+  \rightarrow
+  1.58
+  \\
+  CL
+  =
+  7[dB]
+  \rightarrow
+  5
+  \quad&\wedge\quad
+  F_{m}
+  =
+  8[dB]
+  \rightarrow
+  6.31
+  \\
+  G_2
+  =
+  30[dB]
+  \rightarrow
+  1000
+  \quad&\wedge\quad
+  F_2
+  =
+  2[dB]
+  \rightarrow
+  1.58
+\end{align}
+
+\begin{align}
+  T_1
+  &=
+  (F_1-1)T_0
+  =
+  (1.58-1)300=174[K]
+  \\
+  T_m
+  &=
+  (CL-1)T_0
+  =
+  (5-1)300=1200[K]
+  \\
+  T_2
+  &=
+  (F_2-1)T_0
+  =
+  (1.58-1)300=174[K]
+\end{align}
+
+\begin{align}
+  T_{tot}
+  &=
+  T_1
+  +
+  {T_m\over G_1}
+  +
+  {T_2CL\over G_1}
+  \\
+  &=
+  174
+  +
+  {1200/1000}
+  +
+  174\cdot5/1000
+  \\
+  T_{tot}
+  &=
+  176.07[K]
+\end{align}
+
+
+\vspace{1em}
+\begin{center}
+  Thus, combining (31), (32) and (41) into (30):
+\end{center}
+
+\begin{align}
+  N_{out}
+  &=
+  1.38\cdot10^{-23}
+  \cdot
+  100\cdot 10^3
+  \cdot
+  199526
+  \cdot
+  (165+176.07)
+  \\
+  N_{out}
+  &=
+  9.4\cdot10^{-11}
+  \rightarrow
+  -100.27[dB]
+\end{align}
+
+
+
+
+\subsection{Find the gain $G_r$ of the receiving antenna to obtain a 10 dB signal-to-noise ratio at the receiver output.}
+
+\end{document}

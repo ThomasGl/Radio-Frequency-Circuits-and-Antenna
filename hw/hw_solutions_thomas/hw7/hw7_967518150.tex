@@ -1,0 +1,216 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{bookmark}
+\usepackage{physics}
+\usepackage{cancel}
+\input{insbox}
+\usepackage{titling}
+\usepackage{xcolor}
+\usepackage{circuitikz}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+\usetikzlibrary{arrows, automata}
+
+
+\makeatletter
+\pdfstringdefDisableCommands{\let\HyPsd@CatcodeWarning\@gobble}
+\makeatother
+
+\title{
+  \Large $\textbf{Radio Frequency Circuits \& Antenna}$
+}
+\author{
+  $\textbf{Thomas Glezer}$\\
+  $\textbf{Tel Aviv University}$\\\\
+  ---\\\\
+  $\textbf{Homework: 7}$\\
+}
+\date{\today}
+
+
+
+\begin{document}
+
+\begin{titlingpage}
+  \maketitle
+\end{titlingpage}
+
+\section{Derive the radar equation for the bistatic case, where the transmit and receive
+antennas have gains $G_t$ and $G_r$, and are at distances $R_t$ and $R_r$ from the target, respectively.}
+
+\begin{align*}
+  S=
+  {P_tG_t\over4\pi R_t^2},
+  \quad
+  S_r=
+  {P_tG_t\over4\pi R_t^2}
+  \cdot
+  {\sigma\over4\pi R_r^2}
+  \\
+  \therefore
+  P_r=
+  S_rA_r=
+  S_r{\lambda^2G_r\over4\pi}=
+  {P_tG_t\over4\pi R_t^2}
+  \cdot
+  {\sigma\over4\pi R_r^2}
+  \cdot
+  {\lambda^2G_r\over4\pi}
+\end{align*}
+
+\section{A stationary Doppler radar system illuminates a target moving at a radial velocity $\mathcal{V}_r$ (positive in the direction towards the radar) as shown below:}
+
+\begin{itemize}
+  \item [a)] Find the minimum pass band of the filter $[f_1, f_2]$, so that the target is detected in the velocity range 100÷700 m/s.
+  \begin{align*}
+    f_{d,min}
+    =
+    {2v_{min}f_{rf}\over c}
+    =
+    {2\cdot100\over3\cdot10^8}\cdot 3\cdot10^9
+    =
+    2[KHz]
+    \\
+    f_{d,max}
+    =
+    {2v_{max}f_{rf}\over c}
+    =
+    {2\cdot700\over3\cdot10^8}\cdot 3\cdot10^9
+    =
+    14[KHz]
+    \\
+    3[GHz]+2[Hz]\le f_d \le 3[GHz]+14[GHz]
+    \\
+    f=f_{LO}-f_d
+    \\
+    f_1=f_{LO}-(f_{RF}+f_{d,max})
+    \\
+    f_2=f_{LO}-(f_{RF}+f_{d,min})
+    \\
+    9.986[MHz]\le f_d \le 9.998[MHz]
+    \\
+    B=f_2-f_1=12[KHz]
+  \end{align*}
+  \item [b)] Find the maximum range for detection of the target by the radar assuming that detection requires a 12 dB signal-to-noise ratio at the output of the filter.
+  \begin{align*}
+    G_{RF}=18[dB]\rightarrow10^{1.8}=63.10
+    \\
+    N_{RF}=2.3[db]\rightarrow10^{0.23}=1.7
+    \\
+    T_{RF}=(N_{RF}-1)T_0=(1.7-1)290=202.5[K]
+    \\
+    CL=5.7[dB]\rightarrow10^{0.57}=3.715
+    \\
+    NF_m=6.7[dB]\rightarrow10^{0.67}=4.677
+    \\
+    T_m=(NF_m)T_0=1066[K]
+    \\
+    G_{if}=23[dB]\rightarrow10^{2.3}=199.5
+    \\
+    NF_{it}=0.9[dB]\rightarrow10^{0.09}=1.23
+    \\
+    T_{it}=(N_{it}-1)T_0=(1.23-1)290=66.78[K]
+    \\
+    IL=0.5[dB]\rightarrow10^{0.05}=1.122
+    \\
+    T_{filter}=(IL-1)T_p=0.122\cdot300=36.61[K]
+  \end{align*}
+  \begin{align*}
+    T_{cos}
+    &=
+    T_{rf}+{T_m\over G_{rf}}+{T_{it}CL\over G_{rf}}+{T_{filter}CL\over G_{rf}G_{if}}
+    \\
+    &=202.5+{1066\over63.1}+{66.78\cdot3.715\over63.1}+{36.61\cdot3.715\over63.1\cdot199.5}=223.3[K]
+    \\
+    T_A&=\eta T_b+(1-\eta)T_{ant}=0.8\cdot150+0.2\cdot310=182[K]
+    \\
+    T_{sys}&=T_A+T_{cos}=182+223.3=405.3[K]
+  \end{align*}
+  \begin{align*}
+    P_r={P_tG_a^2\lambda^2\sigma\over(4\pi)^3R^4}, \quad S_{out}&=P_rG_{sys}, \quad N_{out}=KBT_{sys}G_{sys}
+    \\
+    G_{sys}={G_{rf}G_{it}\over CL\cdot IL}, \quad {S_{out}\over N_{out}}={P_r\over KBT_{sys}}&>10^{12/10}, \quad \lambda=c/f={3\cdot10^8\over3\cdot10^9}=0.1[M]
+    \\
+    {P_tG_a^2\lambda^2\sigma\over(4\pi)^3KBT_{sys}\cdot R^4}&>10^{1.2}
+  \end{align*}
+  \begin{align*}
+    R^4&<{20\cdot10^3\cdot10^{4\cdot2}\cdot0.1^2\cdot0.1\over(4\pi)^3\cdot1.38\cdot10^{-23}\cdot12\cdot10^3\cdot405.3\cdot10^{1.2}}
+    \\
+    R^4&<9.4746\cdot10^{20}
+    \\
+    \therefore
+    R&<1.754\cdot10^5[m]
+  \end{align*}
+  \item [c)] The antenna's main lobe also illuminates a ground area with a total RCS of 10000 $m^2$ at the same range as the target. Find the minimum attenuation of the filter (in dB) at a frequency of 10 MHz so that the target is detected within a range of 50 km. Note: IL = 0.5 dB indicates the loss within the pass band.
+  \begin{align*}
+    S_{out}=P_rG_{sys}, \quad P_r={P_tG_a^2\lambda^2\sigma\over(4\pi)^3R_1^4}, \quad R_1=50[Km], \quad G_{sys}={G_{rf}G_{it}\over CL\cdot IL}
+  \end{align*}
+  \begin{align*}
+    N_{gr}=P_r'G_{sys}', \quad
+    P_r'={P_tG_a^2\lambda^2\sigma'\over(4\pi)^3R_1^4}=P_r{\sigma'\over\sigma}, \quad
+    \sigma'&=10^4[m^2], \quad
+    G_{sys}'= {G_{rf}G_{it}\over CL\cdot IL'}=G_{sys}{IL\over IL'}
+    \\
+    N_{gr}=P_r'G_{sys}'=P_r{\sigma'\over \sigma}{IL\over IL'}&=S_{out}{\sigma'\over \sigma}{IL\over IL'}, \quad q={\sigma'\over \sigma}{IL\over IL'}
+    \\\\
+    N_{gr}=S_{out}q
+  \end{align*}
+  \begin{align*}
+    N_t=N_{out}+N_{gr}=KBT_{sys}G_{sys}+qP_rG_{sys}
+  \end{align*}
+  \begin{align*}
+    {N_t\over S_{out}}<10^{-1.2}
+    \\
+    {(KBT_{sys}+qP_r)G_{sys}\over P_rG_{sys}}<10^{-1.2}
+    \\
+    {KBT_{sys}\over P_r}+q<10^{-1.2}
+  \end{align*}
+  \begin{align*}
+    KBT_{sys}=1.38\cdot10^{-23}12\cdot10^3\cdot405.3=6.71\cdot10^{-17}[W]
+    \\
+    P_r
+    =
+    {P_tG_a^2\lambda^2\sigma\over(4\pi)^3R_1^4}=
+    {20\cdot10^3\cdot10^8\cdot0.1^2\cdot0.1\over(4\pi)^3(50\cdot10^3)^4}=1.61\cdot10^{-13}[W]
+    \\
+    {KBT_{sys}\over P_r}=4.17\cdot10^{-4}
+  \end{align*}
+  \begin{align*}
+    4.17\cdot10^{-4}+q&<10^{-1.2}
+    \\
+    q&<0.0631-4.17\cdot10^{-4}
+    \\
+    q&<0.0627
+    \\\\
+    q&={\sigma'\over \sigma}{IL\over IL'}
+    \\
+    IL'&={\sigma'\over \sigma}{IL\over q}
+    \\
+    IL'&>{10^4\over0.1}{10^{0.5/10}\over0.0627}=1.79\cdot10^6
+    \\\\
+    IL'&>62.5[dB]
+  \end{align*}
+\end{itemize}
+
+\end{document}

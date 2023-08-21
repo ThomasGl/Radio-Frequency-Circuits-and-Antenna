@@ -1,0 +1,70 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{bookmark}
+\usepackage{physics}
+\usepackage{cancel}
+\input{insbox}
+\usepackage{titling}
+\usepackage{xcolor}
+\usepackage{circuitikz}
+
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+\usetikzlibrary{arrows, automata}
+
+\makeatletter
+\pdfstringdefDisableCommands{\let\HyPsd@CatcodeWarning\@gobble}
+\makeatother
+
+\title{
+  \Large $\textbf{Radio Frequency Circuits \& Antenna}$
+}
+\author{
+  $\textbf{Thomas Glezer}$\\
+  $\textbf{Tel Aviv University}$\\\\
+  ---\\\\
+  $\textbf{Lecture Notes}$\\
+}
+\date{\today}
+
+
+
+\begin{document}
+
+\begin{titlingpage}
+  \maketitle
+\end{titlingpage}
+
+\pagebreak
+
+\section{Amplifiers, swithces and mixers.}
+
+Reasonably similar to the case of VLSI analysis. Thus, we desire our circuits to have some sort of matching - ideally perfect - for maximal power transfer between a signal generator $V_s$ and our load, say some $Z_L$, which normally is $R_L$. Luckly enough, $r_o$ in very high frequencies is drastically lowered, thus it's magnitude is in the order of $100[\Omega]$, which is bad for the gain amplification from the circuit in case, but its natural and not possible to be contorlled. We make use of such natural phenomena to assist us in matching an amplifier output impedance - $r_o\approx100[\Omega]$ - to a load - $R_L$ - or a next stage supply input impedance - which is drastically reduced because of operations in very high frequency, then $C_{gs}, C_{m}$  are not infinite as they are assumed for low frequencies -.
+
+\section{Amplifiers}
+
+Setting bias is now a more complex arrangement as we had previously in Analog Electronic Circuits. We could be facing a setup of where a 2-stage implementation is required to fully encapsulate the bias, power input and output. We are analysis only basic formulation, mostly $R_{on}$ considerations, and biasT setup - series capacitor and parallel inductor - following up a source element. Tunning input, output, finding voltage gain.
+
+\section{Switch}
+
+They are used for implementing in the same system a transmiting and recieving systems, isolation between them is not ideal, we have some trade-off to consider when designing the matching, $R_{on}$ should be accounted for.
+
+\section{Mixer}
+
+Designed to make use of RF Antenna technology to accomodated band-limited signals which aren't in the spectrum of RF frequencies $\sim [GHz]$, we can take such signals to this frequency of operation transfer them and revert them back to their original form from a reciving antenna implementation. We should know how to implement a mixer
+
+\end{document}

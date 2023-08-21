@@ -1,0 +1,12 @@
+hw/rf_hw_solutions
+
+course_projects/project_*/files
+course_projects/project_*/*_zip_folder
+course_projects/project_*/*_zip_folder*.zip
+
+*.aux
+*.log
+*.out
+*.gz
+
+.vscode

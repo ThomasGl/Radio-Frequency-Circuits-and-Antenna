@@ -1,0 +1,498 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{bookmark}
+\usepackage{physics}
+\usepackage{cancel}
+\input{insbox}
+\usepackage{titling}
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+\usetikzlibrary{arrows, automata}
+
+
+\makeatletter
+\pdfstringdefDisableCommands{\let\HyPsd@CatcodeWarning\@gobble}
+\makeatother
+
+\title{
+  \Large $\textbf{Radio Frequency Circuits \& Antenna}$
+}
+\author{
+  $\textbf{Thomas Glezer}$\\
+  $\textbf{Tel Aviv University}$\\\\
+  ---\\\\
+  $\textbf{Homework: 4}$\\
+}
+\date{\today}
+
+
+
+\begin{document}
+
+\begin{titlingpage}
+  \maketitle
+\end{titlingpage}
+
+\pagebreak
+
+\section{For a z-directed $\lambda/2$ dipole placed symmetrically at the origin, determine:}
+
+\begin{itemize}
+  \item [a)] The vector effective length:
+  Assuming a cosinusoidal behavior:
+
+  We can define $L=\lambda/2$, i.e. $kL=\pi$:
+
+  \begin{align*}
+    I(z)
+    &=
+    I(0)\cos(kz), \quad |z|<L/2
+  \end{align*}
+
+  recall:
+
+  \begin{align*}
+    \underline{\vb{A}}(\underline{\vb{r}})
+    &=
+    \underline{\hat{\vb{z}}}\mu
+    \int_{-L/2}^{L/2}
+    \,dz'I(z')
+    {
+      e^{-jk|\underline{\vb{r}}-\underline{\vb{r}}'|}
+      \over
+      4\pi|\underline{\vb{r}}-\underline{\vb{r}}'|
+    }
+    \approx
+    \underline{\hat{\vb{z}}}\mu
+    {
+      e^{-jkr}
+      \over
+      4\pi r
+    }
+    \int_{-L/2}^{L/2}
+    \,dz'I(z')
+    e^{+jk\underline{\hat{\vb{r}}}\cdot\underline{\vb{r}}'}
+    \\
+    \underline{\vb{A}}(\underline{\vb{r}})
+    &\approx
+    \underline{\hat{\vb{z}}}\mu
+    {
+      e^{-jkr}
+      \over
+      4\pi r
+    }
+    \int_{-L/2}^{L/2}
+    \,dz'I(z')
+    e^{+jkz'\cos(\theta)}
+  \end{align*}
+
+  Then using the above relation we get:
+
+  \begin{align*}
+    \underline{\vb{A}}(\underline{\vb{r}})
+    &=
+    \underline{\hat{\vb{z}}}\mu
+    g(r)
+    \int_{-L/2}^{L/2}
+    \,dz'I(0)\cos(kz')
+    e^{+jkz'\cos(\theta)}
+    \\
+    &=
+    \underline{\hat{\vb{z}}}\mu
+    g(r)
+    I(0)
+    \int_{-L/2}^{L/2}
+    \,dz'
+    {
+      e^{+jkz'}
+      +
+      e^{-jkz'}
+      \over
+      2
+    }
+    e^{+jkz'\cos(\theta)}
+    \\
+    &=
+    \cdots
+    \int_{-L/2}^{L/2}
+    \,dz'
+    0.5(e^{jkz'(\cos(\theta)+1)}
+    +
+    e^{jkz'(\cos(\theta)-1)}
+    )
+    \\
+    &=
+    \cdots
+    {
+      e^{-jkL\cos(\theta)\over2}
+      \cdot
+      (
+        (e^{jkL\cos(\theta)}+1)\sin(kL/2)
+        +
+        j\cos(\theta)\cos(kL/2)(e^{jkL\cos(\theta)}-1)
+      )
+      \over
+      (\cos[2](\theta)j^2+1)k
+    }
+    \\
+    &=
+    \cdots
+    {
+      e^{-j\pi\cos(\theta)\over2}
+      \cdot
+      (
+        (e^{j\pi\cos(\theta)}+1)\cancelto{1}{\sin(\pi/2)}
+        +
+        j\cos(\theta)\cancelto{0}{\cos(\pi/2)}(e^{j\pi\cos(\theta)}-1)
+      )
+      \over
+      (1-\cos[2](\theta))k
+    }
+    \\
+    &=
+    \cdots
+    {
+      e^{-j\pi\cos(\theta)\over2}
+      \cdot
+      (e^{j\pi\cos(\theta)}+1)
+      \over
+      \sin[2](\theta)k
+    }
+    \\
+    &=
+    \cdots
+    {
+      e^{j\pi\cos(\theta)\over2}
+      +
+      e^{-j\pi\cos(\theta)\over2}
+      \over
+      \sin[2](\theta)k
+    }
+    \\
+\end{align*}
+
+\begin{align*}
+  \underline{\vb{A}}(\underline{\vb{r}})
+  &=
+  \underline{\hat{\vb{z}}}
+  {
+    \mu
+    \over
+    k
+  }
+  2
+  g(r)I(0)
+  {
+    \cos[\pi/2\cdot\cos(\theta)]
+    \over
+    \sin[2](\theta)
+    }
+\end{align*}
+
+  Recall:
+
+  \begin{align*}
+    \underline{\vb{E}}
+    &=
+    \underline{\hat{\vb{\theta}}}
+    jk\eta
+    (I_0d)g(r)\sin(\theta)
+  \end{align*}
+
+  Thus:
+
+  \begin{align*}
+    \underline{\vb{E}}
+    &=
+    \underline{\hat{\vb{\theta}}}
+    jk\eta
+    g(r)I(0)
+    {
+      2
+      \cos[\pi/2\cdot\cos(\theta)]
+      \over
+      k\sin(\theta)
+    }
+  \end{align*}
+
+  And following from definition we had:
+
+  \begin{align*}
+    \va{h}(\theta,\varphi)
+    &=
+    {1\over I_{in}}
+    \iiint
+    \va{J}(\va{r}')
+    e^{j\va{k}\va{r}'}
+    dV
+    \\
+    \text{Solved previously:}
+    \\
+    \va{h}(\theta,\varphi)
+    &\approx
+    {2\over k}
+    {
+      \cos[\pi/2\cdot\cos(\theta)]
+      \over
+      \sin(\theta)
+    }
+    \underline{\hat{\vb{\theta}}}
+  \end{align*}
+
+
+  \item [b)] The maximum value (in magnitude) of the vector effective length
+
+  \begin{align*}
+    \max{\va{h}(\theta,\varphi)}
+    &=
+    {2\over k}
+    \max{
+      \cos[\pi/2\cdot\cos(\theta)]
+      \over
+      \sin(\theta)
+    }
+    \\
+    &=
+    {2\over k}
+    =
+    {2\over 2\pi/\lambda}
+    =
+    {\lambda\over\pi}
+  \end{align*}
+
+  \item [c)] Maximum open-circuit output voltage when a uniform plane wave with an eletric field as given below is incident broadside on the dipole.
+  \begin{align*}
+    \vb{E}^{inc}(\theta=90^{\circ}) = 10^{-3}\vu{\theta}[V/\lambda]
+  \end{align*}
+
+  \begin{align*}
+    V_{o.c.}
+    &=
+    \max{\va{h}(\theta,\varphi)\cdot \va{E}}
+    \\
+    &=
+    {\lambda\over\pi}
+    \vu{\theta}
+    10^{-3}
+    \vu{\theta}
+    [V/\lambda]
+    \\
+    &=
+    {10^{-3}\over\pi}
+    [V]
+    =
+    3.18\cdot10^{-4}[V]
+  \end{align*}
+\end{itemize}
+
+\section{The input impedance of a $\lambda/2$ dipole assuming that the input (feed) terminals are at the center of the dipole, is equal to $73+42.5 [\Omega]$. Assuming the dipole is lossless find:}
+
+\begin{itemize}
+  \item [a)] Input impedance assuming that the input (feed) terminals have been shifted to a point on the dipole which is located $\lambda/8$ away from either end point of the dipole:
+
+  \begin{align*}
+    I_e(z')
+    &=
+    \vb{\hat{z}}
+    I_0
+    \sin[k(l/2-|z'|)],
+    \quad
+    |z'|<l/2
+  \end{align*}
+
+  At infinitesimal distance:
+  \begin{align*}
+    I_{in}
+    &=
+    I_0
+    \sin[kl/2]
+    =
+    I_0
+    \sin[{2\pi\over2\lambda}\lambda/2]
+    =
+    I_0
+  \end{align*}
+
+  At $\lambda/8$ distance:
+  \begin{align*}
+    I_{in}'
+    &=
+    I_0
+    \sin[k(l/2-|z'|)]_{z'=l/2-\lambda/8}
+    =
+    I_0
+    \sin[k\cdot\lambda/2]
+    \\
+    &=
+    I_0\sin[{2\pi\over\lambda}\lambda/8]
+    =
+    I_0\sin[\pi/4]
+    =
+    I_0\cdot\sqrt{2}/2
+    =
+    I_0/\sqrt{2}
+  \end{align*}
+
+  \begin{align*}
+    z'/z
+    =
+    (I_{in}/I_{in}')^2
+    =
+    (1/1/\sqrt{2})^2
+    =
+    2
+  \end{align*}
+
+
+  \item [b)] Capacitive or inductive reactance that must be placed parallel to the new input terminals of part (a) so that the antenna becomes resonant (make the total input impedance real):
+
+  \begin{align*}
+    Y'
+    &=
+    z'^{-1}
+    =
+    1/(2z')
+    =
+    1/
+    (146+j85)
+    =
+    {
+      1
+      \over
+      168.94\angle30.207^{\circ}
+    }
+    \\\\
+    &=
+    0.005919(\cos(30.207)-j\sin(30.207))
+    \\
+    &=
+    5.12\cdot10^{-3}
+    -j2.978\cdot10^{-3}
+    [\Omega^{-1}]
+  \end{align*}
+
+  \begin{align*}
+    \tilde{Y}
+    &=
+    j2.978\cdot10^{-3}
+    \\
+    \tilde{Z}
+    &=
+    1/\tilde{Y}
+    =
+    -j/(2.978\cdot10^{-3})
+    =
+    -j335.8[\Omega]
+  \end{align*}
+
+  \begin{align*}
+    Y_{in}^t
+    &=
+    \tilde{Y}
+    +
+    Y'
+    =
+    5.12\cdot10^{-3}[\Omega^{-1}]
+    \\\\
+    Z_{in}^t
+    &=
+    1/Y_{in}^t
+    =
+    195.3[\Omega]
+  \end{align*}
+
+  \item [c)] VSWR of the new input terminals when the resonant dipole of part (b) is connected to a $300[\Omega]$ transmission line:
+
+  \begin{align*}
+    |\Gamma|
+    &=
+    \Big|
+    {
+      Z_0-Z_{in}^t
+      \over
+      Z_0+Z_{in}^t
+    }
+    \Big|
+    =
+    {
+      300-195.3
+      \over
+      300+195.3
+    }
+    =
+    0.211
+    \\\\
+    VSWR
+    &=
+    {
+      1+|\Gamma|
+      \over
+      1-|\Gamma|
+    }
+    =
+    {
+      1+0.211
+      \over
+      1-0.211
+    }
+    =
+    1.536
+  \end{align*}
+\end{itemize}
+
+
+\section{A uniform array of 20 isotropic elements is placed along the z-axis with $\lambda/2$ spacing between the adjacent elements. Calculate a progressive phase shift $\beta$ (in radians) for the following array types (main beam radiation directions):}
+
+\begin{align*}
+  kd\cos(\theta_0)+\beta
+  &=
+  0
+  \\
+  \beta&=-kd\cos(\theta_0)
+  =
+  -{2\pi\over\lambda}{\lambda\over4}\cos(\theta_0)
+  =
+  -{\pi\over2}\cos(\theta_0)
+\end{align*}
+
+\begin{itemize}
+  \item [a)] Broadside :
+  $\beta = 0$
+  \item [b)] End-fire with maximum at $\theta=0^{\circ}$:
+  $\beta = -\pi/2$
+  \item [c)] End-fire with maximum at $\theta=180^{\circ}$:
+  $\beta = \pi/2$
+  \item [d)] Phase-array with maximum radiation at $\theta=50^{\circ}$:
+  $\beta = -\pi/2\cos(50^{\circ})\approx -1.01$
+\end{itemize}
+
+\section{Find the maximum distance between the elements in a linear scanning array to suppress grating lobes if the array is designed to scan to the maximum angles of:}
+
+A classic solution to this problem is given by:
+
+\begin{align*}
+  d_{\max}={\lambda\over1+|\cos(\theta_0)|}
+\end{align*}
+
+\begin{itemize}
+  \item [a)] $\theta = 0^{\circ}$: $\lambda/2$ = $0.5\lambda$
+  \item [b)] $\theta = 30^{\circ}$: $\lambda/(1+\sqrt{3}/2)$ = $0.536\lambda$
+  \item [c)] $\theta = 45^{\circ}$: $\lambda/(1+\sqrt{2}/2)$ = $0.586\lambda$
+  \item [d)] $\theta = 60^{\circ}$: $\lambda/(1+1/2)$ = $0.\bar{6}\lambda$
+  \item [e)] $\theta = 135^{\circ}$: $\lambda/(1+\sqrt{2}/2)$ = $0.586\lambda$
+\end{itemize}
+
+\end{document}

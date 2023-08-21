@@ -1,0 +1,510 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{bookmark}
+\usepackage{physics}
+\usepackage{titling}
+\usepackage{xcolor}
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+
+\graphicspath{ {./files/} }
+
+\input{insbox}
+\usetikzlibrary{arrows, automata}
+
+\usepackage{geometry}
+
+\newgeometry{vmargin={20mm}, hmargin={15mm,17mm}}
+
+\makeatletter
+\pdfstringdefDisableCommands{\let\HyPsd@CatcodeWarning\@gobble}
+\makeatother
+
+\title{%
+  \Large $\textbf{Radio Frequency Circuits \& Antenna}$
+}
+\author{
+  $\textbf{Thomas Glezer}$\\\\
+  $\textbf{---}$\\\\
+  $\textbf{I.D. 967518150}$\\\\
+  $\textbf{---}$\\\\
+  $\textbf{Project: 1}$
+  \\\\
+}
+\date{\today}
+
+\begin{document}
+
+\begin{titlingpage}
+  \maketitle
+\end{titlingpage}
+
+\tableofcontents
+
+\pagebreak
+
+\begin{center}
+  \underline{\textbf{CST Project \#1 – antenna simulation}}
+\end{center}
+
+In this project you will design and simulate a monopole antenna and arrays using CST. The antenna
+design is based on parameters that are given in the table below (each student has different design
+parameters!). The antenna should be fed by a coaxial line with a characteristic impedance that is also
+given by the same table.
+
+Note the following definitions and remarks:
+
+\begin{itemize}
+  \item $\theta$ is the angle between the z-axis and the X-Y plane.
+  \item $\varphi$ is defined as the angle between the X-axis and the Y-axis, in the X-Y plane.
+  \item $f$ is the center frequency of your design, as specified in the table below. Accordingly, $T$ is the time period: $T=1/f$.
+  \item Input matching, Return Loss, or $S_{11}$ in dB scale are all defined to be: $20\log|\Gamma|$, where $\Gamma$ is the reflection coefficient of the antenna.
+  \item While the design task in section \#2 is recommended to be done only after the Scattering Parameters (SP) are studied, the rest of the sections require no additional theoretical background (other than studied in class so far).
+  \item Your submission should include each of the CST model files (optimized models, with configuration ready for simulations!), all of your Matlab code files and a final document that answers all the questions below, presents all the plots and describes the full design procedure of each of the models.
+\end{itemize}
+
+\textbf{From the given parameter table per student I.D. the ones used in the project are:}
+
+\vspace{2em}
+\begin{tabular}{| c | c | c | c |}
+  \hline
+  Ground Plane & Frequency $f[GHz]$ & \shortstack{Coax cable \\ characteristic impedance $[\Omega]$} & Array parameters\\
+  \hline
+  \shortstack{Disc with \\ diameter of $2.45\lambda$} & 6.2 & 35 & \shortstack{4 elements along the X-axis.\\ Spacing of $d=0.8\lambda$}\\
+  \hline
+\end{tabular}
+
+\pagebreak
+
+
+\section{(5 points) Design a coaxial cable with a characteristic impedance that is given by the table below. Specifically, set the radius of the inner core, $a$, and the radius of the external shield, $b$, while the medium in between the inner pin and the external shield is a dielectric material named “Teflon” (its relative dielectric constant can be found in the material's library in CST).}
+
+Note: this coax cable will feed the monopole antenna. Therefore, set its parameters so that they
+will be mechanically convenient to be used with your monopole. You can also use standard
+coaxial cable parameters as initial design values.
+
+Specify the equation/s that helped you choosing the parameters.
+
+\begin{align}
+  Z
+  &=
+  {
+    1
+    \over
+    2\pi
+  }
+  \sqrt{
+    \mu
+    \over
+    \varepsilon
+  }
+  \ln{b\over a}
+  \\
+  35
+  &=
+  {
+    1
+    \over
+    2\pi
+  }
+  120\pi
+  \sqrt{
+    1
+    \over
+    2.1
+  }
+  \ln{b\over a}
+  \\
+  {
+    35
+    \over
+    60
+  }
+  \sqrt{2.1}
+  &=
+  \ln{b\over a}
+  \\
+  0.8453
+  &=
+  \ln{b\over a}
+  \\
+  e^{0.8453}
+  &=
+  {b\over a}
+  \\
+  2.3287
+  &=
+  b/a
+\end{align}
+
+\vspace{0.5em}
+
+\begin{center}
+  Thus, we can set $a=1[mm]\wedge b=2.3287[mm]$
+\end{center}
+
+
+\section{(10 points) Build a CST model of the coaxial line that was designed in Section \#1 above. The length of the coax cable should be 10 wavelengths (according to the frequency given in the table below). Place ports at the input and at the output of the coax line, with characteristic impedance (of the ports) according to that of the coax cable (as specified in the table) and simulate the 2 ports S-Parameters over the frequency band of $0.1f - 2f$.}
+
+\begin{align}
+  \lambda
+  &=
+  c/f
+  =
+  {3\cdot10^8\over 6.2\cdot10^9}
+  =
+  0.0484
+  =
+  48.4[mm]
+  \\
+  L&=
+  10\cdot0.0484
+  =
+  0.484[m]
+  =
+  484[mm]
+\end{align}
+
+
+
+\begin{itemize}
+  \item Optimize the parameters of the coax cable so that $S_{ii}$ ($S_{11}$ and $S_{22}$) will be below -25dB.
+  \\\\
+  {\color{blue}It was already optimized}
+  \item What is the insertion loss of the cable at the frequency $f$?
+  \\\\
+  {\color{blue}-0.048[dB]}
+  \item Present the S-Parameters results of the optimized cable over the given frequency band.
+  \begin{center}
+    $S_{11}$
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q2/q2_11.png}
+  \pagebreak
+  \begin{center}
+    $S_{12}$
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q2/q2_12.png}
+  \begin{center}
+    $S_{21}$
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q2/q2_21.png}
+  \begin{center}
+    $S_{22}$
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q2/q2_22.png}
+\end{itemize}
+
+
+\section{(5 points) Change the length of the coax cable to two wavelengths and present the electric field (amplitude and direction) at the middle of the coax cable and the surface current on the coax conductors at the time points $t=0$, $t=T/4$, $t=T/2$, and $t=3T/4$.}
+
+\subsection{Electric Field}
+
+\subsubsection{$t=0$}
+
+\includegraphics[width=\linewidth]{rf_project/images/q3/q3_ef_t0.png}
+
+\subsubsection{$t=T/4$}
+
+\includegraphics[width=\linewidth]{rf_project/images/q3/q3_ef_t1.png}
+
+\subsubsection{$t=T/2$}
+
+\includegraphics[width=\linewidth]{rf_project/images/q3/q3_ef_t2.png}
+
+\subsubsection{$t=3T/4$}
+
+\includegraphics[width=\linewidth]{rf_project/images/q3/q3_ef_t3.png}
+
+\subsection{Surface current}
+
+\subsubsection{$t=0$}
+
+\includegraphics[width=\linewidth]{rf_project/images/q3/q3_sc_t0.png}
+
+\subsubsection{$t=T/4$}
+
+\includegraphics[width=\linewidth]{rf_project/images/q3/q3_sc_t1.png}
+
+\subsubsection{$t=T/2$}
+
+\includegraphics[width=\linewidth]{rf_project/images/q3/q3_sc_t2.png}
+
+\subsubsection{$t=3T/4$}
+
+\includegraphics[width=\linewidth]{rf_project/images/q3/q3_sc_t3.png}
+
+\section{(15 points) Now build a model of the monopole antenna along the Z-axis, and its ground plane, according to their parameters in the table below. Use the designed coax cable in order to feed the monopole antenna: create a hole in the ground plane in a diameter which is identical to the shield of the coax cable, insert the edge of the coax cable into this hole, and extend the inner core of the coax above the ground plane in order to implement the monopole antenna. Now, fine-tune the length of the monopole in order to achieve a matching (Return Loss, or $S_{11}$ in dB scale) of better than $-10dB$ over the frequency band $0.95f -1.05f$}
+
+\begin{itemize}
+  \item Present the input matching over the bandwidth 0.5f -2f. Use markers on the plot in order to demonstrate the achieved design goals.
+  \\
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_s_parameters.png}
+  \item What is the value of the reflection coefficient at the frequency $f$?
+  \\
+  {\color{red}$S_{11}=-23.871[dB]$}
+  \item Compare the optimized length to the theoretical one. If there is any difference, what is the reason for that?
+
+  {\color{blue}The theoretical length was meant to be $\lambda/4$, i.e. $L/8$. Yet, the implementation above was done with a length of $L/9$, slightly smaller. This difference is due to the fact that we dont have infinit objects and thus we have non-zero effects that are normally neglected such as evanescent waves and the fact that the cylindrical object generated in CST meant to be the coax doesn't have a perfectly rounded cut, but rather an approximation to it.}
+  \item Present the 3D far field radiation pattern of the monopole at the frequency f, and the radiation pattern over the 2 main planes: the X-Z plane (“Elevation”) as a function of $\theta$, and the X-Y plane (“Azimuth”) as a function of $\varphi$. Compare it to the expected radiation pattern according to the theory and explain the differences.
+  \pagebreak
+  \begin{center}
+    3D plots:
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_3d_0.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_3d_1.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_3d_2.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_3d_3.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_3d_4.png}
+
+  \begin{center}
+    Azimuth
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_azimuth_plane.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_3d_azimuthal.png}
+
+
+  \begin{center}
+    Elevation
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_elevation_plane.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_3d_elevation_plane.png}
+
+  {\color{blue} We have results which are very close up to the limitations in meshcells. We expect to see a mirror image about the $0^{\circ}-180^{\circ}$ line in the polar presentation. And we see such phenomena, the apparent deviation on the Azimuthal plane is due to limits in precision, with the assistance of the markers we can oberve the values are really close to one another.}
+
+  \item What is the direction of the peak gain of the monopole, and what is the peak gain and peak directivity values? Compare them to the expected performance according to the theory and explain the differences. What is the antenna efficiency?
+  \\
+  {\color{blue}Directivity for max gain:$(\theta=48^{\circ}, \varphi=90^{\circ})$. From the 3D plot we have Directivity=4.787[dBi]. Thus, $\eta=G/D=10^{4.7/10}/10^{4.787/10}=98\%$. The possible explanation for this difference is the limitation from the software in meshcells and computer floating point precision.}
+  \vspace{1em}
+  \pagebreak
+
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_gain.png}
+  \item Present the surface currents on the monopole antenna and on the ground plane. Compare it to the expected results according to the theory and explain the differences, if those exist.
+  \pagebreak
+  \begin{center}
+    Surface currents, $t=0$
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_sc_t0.png}
+  \pagebreak
+  \begin{center}
+    Surface currents, $t=T/4$
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_sc_t90.png}
+  \pagebreak
+  \begin{center}
+    Surface currents, $t=T/2$
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_sc_t180.png}
+  \pagebreak
+  \begin{center}
+    Surface currents, $t=3T/4$
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q4/q4_sc_t270.png}
+
+  {\color{blue}It seems that the surface currents are traveling in the directions and with matching the time pulses we expect, yet we have some very minimal current leakage between the teflon contact and the groundplane designed for the monopole, which physically should happen as well as it is open, i.e. it propagates.}
+\end{itemize}
+
+\section{(10 points) Next, add to the existing monopole model a “reflector” - another metal plate which is perpendicular to the ground plane, and has a size of 20cm x 20cm, where its normal is in the direction of the X-axis. Place this reflector at a chosen distance of $0.2\lambda$ to $\lambda$ from the monopole, where this distance is optimized in order to achieve maximum peak gain for the antenna. Now, fine-tune the length of the monopole in order to achieve a matching of better than $-10dB$ over the frequency band $0.95f -1.05f$.}
+
+\begin{itemize}
+  \item Present the input matching over the bandwidth $0.5f -2f$. Use markers on the plot in order to demonstrate the achieved design goals.
+  \begin{center}
+    {\color{blue}Here is the paramter sweep comparison at the second parameter sweep analysis. Thus the value used for the length was $0.285\lambda$.}
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q5/optimization_length.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q5/q5_s11.png}
+  \item Compare the optimized length to the theoretical one. If there is any difference, what is the reason for that?
+  {\color{blue}We expected the length to be $\lambda/4=0.25\lambda$, yet this theoretical expectation is for an infinite plane, i.e., infinite in $\hat{z}$ and $\hat{y}$. As such is not the case we have this parameter optimization for a length larger then what we would expect.}
+  \item Present the far field radiation pattern and the gain and directivity of the monopole at the frequency $f$. Compare it to the expected radiation pattern according to the theory and explain the differences. What is the antenna efficiency?
+
+  {\color{blue}From theory we expected the mainlobe to be in $45^{\circ}$ yet we are $48^{\circ}$ very likely due to the same reasons presented before. Efficiency is given in this case by: $\eta=G/D=10^{6.52/10}/10^{6.68/10}=96.4\%$.}
+  \begin{center}
+    Radiation pattern
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q5/q5_radiation_pattern.png}
+  \pagebreak
+  \begin{center}
+    Gain
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q5/q5_gain.png}
+  \pagebreak
+  \begin{center}
+    Directivity
+  \end{center}
+  \includegraphics[width=\linewidth]{rf_project/images/q5/q5_directivity.png}
+\end{itemize}
+
+\section{(55 points) In this section you are requested to use again the same monopole that was optimized in Section \#4 (before adding the side reflector) in order to implement an array as described in the table below. Follow the sections below:}
+
+\begin{itemize}
+  \item (5 points) Write down the expression for the normalized Array Factor of the array that you should implement.
+  \begin{align}
+    AF(\varphi)
+    &=
+    {
+      \sin(N\psi/2)
+      \over
+      N\sin(\psi/2)
+    }
+    =
+    {
+      \sin(4\psi/2)
+      \over
+      4\sin(\psi/2)
+    }
+    \\
+    \psi
+    &=
+    kd\sin(\theta)\cos(\varphi)
+    =
+    {2\pi\over\lambda}(0.8\lambda)\sin(\theta)\cos(\varphi)
+    =
+    1.6\pi\sin(\theta)\cos(\varphi)
+    \\
+    AF(\psi)
+    &=
+    {
+      \sin(4\pi\cdot 1.6\sin(\theta)\cos(\varphi)/2)
+      \over
+      4\sin(1.6\pi\sin(\theta)\cos(\varphi)/2)
+    }
+    \\
+    AF(\psi)
+    &=
+    {
+      \sin(3.2\pi\sin(\theta)\cos(\varphi))
+      \over
+      4\sin(0.8\pi\sin(\theta)\cos(\varphi))
+    }
+  \end{align}
+  \item (5 points) Plot in Matlab the normalized array factor as a function of the $\varphi$ angle (where $\varphi$ is defined as the angle between the X-axis and the Y-axis, in the X-Y plane). Attach your code file to the solution.
+  \begin{center}
+    \includegraphics[width=\linewidth]{6_b.png}
+  \end{center}
+  \item (5 points) Find the directivity of the array, assuming that it is implemented by isotropic elements. If an analytical solution is not trivial, a numerical integration is allowed, conditioned that you attach your code file to the solution.
+  \begin{align}
+    D
+    &=
+    {
+      U_{max}
+      \over
+      P_{rad}/4\pi
+    }
+  \end{align}
+  \begin{align}
+    P_{rad}
+    &=
+    \int\limits_{\varphi=0}^{2\pi}\int\limits_{\theta=0}^{\pi}U(\theta,\varphi)\sin\theta \,d \theta\,d\varphi
+    \\
+    P_{rad}
+    &=
+    \int\limits_{\varphi=0}^{2\pi}\int\limits_{\theta=0}^{\pi}AF^2(\theta,\varphi)\sin\theta \,d \theta\,d\varphi
+    \\
+    &=
+    \int\limits_{\varphi=0}^{2\pi}\int\limits_{\theta=0}^{\pi}
+    \Big({
+      \sin(3.2\pi\cdot \sin(\theta)\cos(\varphi))
+      \over
+      4\sin(0.8\pi\sin(\theta)\cos(\varphi))
+    }\Big)^2\sin\theta \,d \theta\,d\varphi
+  \end{align}
+
+  \begin{align}
+    D
+    &=
+    14.72[dBi]
+  \end{align}
+
+  {\color{blue} The above integral was solved in the python module named "directivity\_computation.py"}
+
+  \item (5 points) Calculate the required electrical phase $\Delta\phi$ that is required in order to steer the beam to an angle $\varphi$=30°. Note the configuration of your array (along the X-axis or the Y-axis)!
+.
+  \begin{align}
+    kd\cos(\varphi=30^{\circ})-\Delta\phi
+    &=
+    0
+    \\
+    \Delta\phi
+    &=
+    -kd\cdot\sqrt{3}/2
+    =
+    -{2\pi\over\lambda}(0.8\lambda)\sqrt{3}/2
+    =
+    -0.4\pi\sqrt{3}
+    \\
+    \Delta\phi
+    &=
+    -0.4\pi\sqrt{3}
+    \rightarrow
+    -180/\pi\cdot0.4\pi\sqrt{3}=-124.7^{\circ}
+  \end{align}
+
+  \item (2 points) Plot in Matlab the normalized array factor as a function of the
+  $\theta$ angle for the array that its beam was steered to the angle $\varphi$=30°. Attach your code file to the solution.
+
+  {\color{blue}Conversely here for a $\theta$ analysis, we can do a similar shift, so it would be with a sin behavior, thus yielding -$0.8\pi$ shift, here is the generated plot, module file name is "steered\_angle\_array\_factor"}
+
+  \pagebreak
+  \begin{center}
+    No phase
+  \end{center}
+  \includegraphics[width=\linewidth]{no_phase.png}
+
+  \pagebreak
+  \begin{center}
+    Phase of $30^{\circ}$
+  \end{center}
+  \includegraphics[width=\linewidth]{steered_angle.png}
+
+  \item (10 points) Implement the array in CST by duplicating the single monopole and its feed, according to the total number of elements of your array. If the metal ground planes of the monopoles are not overlapping, fill the entire gap with PEC. Simulate this structure while feeding all of the monopoles with the same electrical phase and plot the 3D radiation pattern, as well as the radiation pattern in the X-Y plane (over the $\varphi$ angle).
+
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_3d_0.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_3d_1.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_3d_2.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_3d_3.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_3d_4.png}
+
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_xy.png}
+
+
+  \item (3 points) Compare the radiation pattern in the X-Y plane to the theoretical radiation pattern of the array factor.
+
+  {\color{blue} It's basically the same pattern, up to the 3rd order of sidelobe levels that ended up summing up themselves, that could be from the non ideal groundplane implementation and not optimized core extension of the coax core PEC for propagation but rather an approximation.}
+  \item (5 points) Compare between the peak directivity of the implemented array to the theoretical directivity of the array of isotropic elements that you found above. What is the antenna efficiency?
+
+  {\color{blue}The theoretical value is 14.72 and the antenna output was 12.60 both units are dBi, this could be from the imperfections mentioned in the item above. The efficiency found was -0.686[dB]$\rightarrow\eta=85.4\%$}
+  \item (5 points) Present the input matching over the bandwidth $0.5f - 2f$ of one of the middle elements of your array. Use markers on the plot in order to demonstrate the achieved design goals. What is the reason for the difference between this matching performance and the one of a single monopole?
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_s_parameters.png}
+
+  {\color{blue} I forgot to add the markers but the matching is pretty good as we can observe in the vicinity of 5\% difference to $f_0$. This difference in matching is overlaps in the groundplane and non-idealities from CAD simulation software.}
+
+  \item (5 points) Next, apply the electrical phase offset that you found ($\Delta\phi$) between one array's element port and its neighbor, in order to steer the beam to the geometrical angle $\varphi$=30°. Plot the 3D radiation pattern, as well as the radiation pattern in the X-Y plane (over the $\varphi$ angle).
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_3d_phase_0.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_3d_phase_1.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_3d_phase_2.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_3d_phase_3.png}
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_3d_phase_5.png}
+
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_xy_phase.png}
+
+  {\color{blue}The steering angle to $30^{\circ}$ as both 0 and 180 moved up by 30 and the mainlobe went to the by $36^{\circ}$ in simulation and the sidelobe levels were very high, possibly from collapsing sine and cosine values in an unfortunate conincidence.}
+  \item (5 points) Present again the input matching over the bandwidth $0.5f - 2f$, now when the monopoles are fed with a linear phase. Use markers on the plot in order to demonstrate the achieved design goals. What is the reason for the difference between this matching performance and the one of a single element in the array where no electrical phase was applied?
+  \includegraphics[width=\linewidth]{rf_project/images/q6/q6_s_phase_parameters_matching.png}
+
+  {\color{blue} Now the matching is closer to the 3rd element and the phase between the elements can cancel better the sidelobe levels in the close vicinity of the mainlobe, also the angular width for 3dB point is almost double, providing a better performance for radar implementation.}
+\end{itemize}
+
+\end{document}

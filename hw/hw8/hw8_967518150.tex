@@ -1,0 +1,285 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{bookmark}
+\usepackage{physics}
+\usepackage{cancel}
+\input{insbox}
+\usepackage{titling}
+\usepackage{xcolor}
+\usepackage{circuitikz}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+\usetikzlibrary{arrows, automata}
+
+
+\makeatletter
+\pdfstringdefDisableCommands{\let\HyPsd@CatcodeWarning\@gobble}
+\makeatother
+
+\title{
+  \Large $\textbf{Radio Frequency Circuits \& Antenna}$
+}
+\author{
+  $\textbf{Thomas Glezer}$\\
+  $\textbf{Tel Aviv University}$\\\\
+  ---\\\\
+  $\textbf{Homework: 8}$\\
+}
+\date{\today}
+
+
+
+\begin{document}
+
+\begin{titlingpage}
+  \maketitle
+\end{titlingpage}
+
+\section{A four-port network is characterized by the scattering matrix shown below:}
+
+\begin{align}
+  \underline{\underline{\vb{S}}}=
+  \begin{pmatrix}
+    0.17\exp(j90^{\circ}) & 0.63\exp(-j45^{\circ}) & 0.68\exp(-j45^{\circ}) & 0 \\
+    0.63\exp(-j45^{\circ}) & 0 & 0 & 0.56\exp(j45^{\circ})\\
+    0.68\exp(-j45^{\circ}) & 0 & 0.24\exp(j38^{\circ}) & 0.38\exp(j45^{\circ})\\
+    0 & 0.56\exp(j45^{\circ}) & 0.38\exp(-j45^{\circ}) & 0.32\exp(-j32^{\circ})
+  \end{pmatrix}
+\end{align}
+
+\begin{itemize}
+  \item [a)] Is this network loss-less?
+  \begin{align}
+    |S_{11}|^2+|S_{21}|^2+|S_{31}|^2+|S_{41}|^2=0.17^2+0.63^2+0.68^2=0.8882<1
+  \end{align}
+  {\color{blue}Therefore, the network isn't lossless.}
+  \item [b)] Is this network reciprocal?
+  \begin{align}
+    S_{34}\neq S_{43}
+  \end{align}
+  {\color{blue}Therefore, the network isn't reciprocal.}
+  \item [c)] What is the return loss at port 1 when all other ports are matched?
+  \begin{align}
+    RL=-20\log|S_{11}|=-20\log0.17=15.39[dB]
+  \end{align}
+  \item [d)] What is the insertion loss and phase between ports 2 and 4, when all other
+  ports are matched?
+  \begin{align}
+    IL_{24}=-20\log|S_{24}|=-20\log0.56=5.04[dB], \quad \varphi=45^{\circ}
+  \end{align}
+  \item [e)] What is the reflection coefficient seen at port 1 if a short circuit is placed at the terminal plane of port 3, and all other ports are matched?
+  \begin{align}
+    b_1=S_{11}a_1+S_{12}a_2+S_{13}a_3+S_{14}a_4\\
+    b_3=S_{31}a_1+S_{32}a_2+S_{33}a_3+S_{34}a_4\\
+    a_2=a_4=0, a_3=\rho b_3, \quad \rho={Z_l-Z_0\over Z_l+Z_0}
+  \end{align}
+  \begin{align}
+    b_1&=S_{11}a_1+S_{13}a_3\\
+    b_3&=S_{31}a_1+S_{33}a_3\\
+    b_3&=S_{31}a_1+S_{33}\rho b_3\\
+    b_3(1-S_{33}\rho)&=S_{31}a_1\\
+    a_3=\rho b_3&={\rho S_{31}\over1-S_{33}\rho}a_1
+  \end{align}
+  {\color{blue} Plugging (13) into (9):}
+  \begin{align}
+    b_1&=\Big(S_{11}+{\rho S_{31}\over1-S_{33}\rho}\Big)a_1\\
+  \end{align}
+  {\color{blue}When we short circuit $Z_l\rightarrow\infty, \rho\rightarrow-1$, then the reflection seen at port-1 is:}
+  \begin{align}
+    {b_1\over a_1}&=S_{11}-{ S_{31}\over1+S_{33}\rho}\\
+    &=0.17j-{0.68^2\exp(-90^{\circ})\over1.1891+0.1475j}\\
+    &=0.17j+{0.4624\over1.1891+0.1475j}\cdot{1.1891-0.1475j\over1.1891-0.1475j}\\
+    &=0.17j+{0.4624(1.1891-0.1475j)\over1.1891^2+0.1475^2}\\
+    &=0.17j+0.383-0.0475j\\
+    &=0.383+0.1225j\\
+    &=0.402\angle17.74
+  \end{align}
+\end{itemize}
+
+\section{A four-port network is characterized by the scattering matrix shown below:}
+
+\begin{align}
+  \underline{\underline{\vb{S}}}=
+  \begin{pmatrix}
+    0.17\angle139.2^{\circ} & 0.39\angle8.02^{\circ} & 0.67\angle91.07^{\circ} & 0.60\angle-130.8^{\circ} \\
+    0.39\angle8.02^{\circ} & 0.17\angle139.2^{\circ} & 0.67\angle91.07^{\circ} & 0.60\angle49.2^{\circ} \\
+    0.67\angle91.07^{\circ} & 0.67\angle91.07^{\circ} & 0.30\angle-30.58^{\circ} & 0.01\angle73.4^{\circ} \\
+    0.60\angle-130.8^{\circ} & 0.60\angle49.2^{\circ} & 0.01\angle73.4^{\circ} & 0.52\angle104.8^{\circ} \\
+  \end{pmatrix}
+\end{align}
+
+The reference plane at port 3 is shifted outward at a distance of $\lambda/5$ and the reference plane at port 2 is shifted inward at a distance of $\lambda/6$ ($\lambda$ is the wave length in the transmission line). Find the new scattering matrix of the network.
+
+\begin{align}
+  \underline{\underline{\vb{\tilde{S}}}}=
+  \begin{pmatrix}
+    0.17\angle139.2^{\circ} & 0.39\angle68.02^{\circ} & 0.67\angle19.07^{\circ} & 0.60\angle-130.8^{\circ} \\
+    0.39\angle68.02^{\circ} & 0.17\angle259.7^{\circ} & 0.67\angle79.07^{\circ} & 0.60\angle109.2^{\circ} \\
+    0.67\angle19.07^{\circ} & 0.67\angle79.07^{\circ} & 0.30\angle-174.58^{\circ} & 0.01\angle1.4^{\circ} \\
+    0.60\angle-130.8^{\circ} & 0.60\angle109.2^{\circ} & 0.01\angle1.4^{\circ} & 0.52\angle104.8^{\circ} \\
+  \end{pmatrix}
+\end{align}
+
+
+\section{A four-port network is characterized by the scattering matrix shown below:}
+
+\begin{align}
+  \underline{\underline{\vb{S}}}=
+  \begin{pmatrix}
+    0.3\angle-30^{\circ} & 0 & 0 & 0.8\angle0^{\circ} \\
+    0 & 0.7\angle-30^{\circ} & 0.7\angle-45^{\circ} & 0 \\
+    0 & 0.7\angle-45^{\circ} & 0.7\angle-30^{\circ} & 0 \\
+    0.8\angle0^{\circ} & 0 & 0 & 0.3\angle-30^{\circ} \\
+  \end{pmatrix}
+\end{align}
+
+If ports 3 and 4 are connected by a lossless matched transmission line with an electrical length of $60^{\circ}$ , find the resulting insertion loss and phase between ports 1 and 2.
+
+\begin{align}
+  a_2=0, \quad a_3=Tb_4, \quad a_4=Tb_3, \quad T=1\angle-60^{\circ}
+\end{align}
+
+\begin{align}
+  b_1&=S_{11}a_1+S_{14}Tb_4\\
+  b_2&=S_{23}Tb_4\\
+  b_3&=S_{33}Tb_4\\
+  b_4&=S_{41}a_1+S_{44}Tb_3=S_{41}a_1+S_{33}S_{44}T^2b_4\\
+  b_4&={S_{41}\over1-S_{33}S_{44}T^2}a_1\\
+  b_2/a_1&={S_23S_{41}T\over 1-S_{33}S_{44}T^2}
+  ={0.7\angle-45^{\circ}\cdot0.8\cdot1\angle-60^{\circ}\over1-0.7\angle-30^{\circ}\cdot0.3\angle-30^{\circ}\cdot1\angle-120^{\circ}}\\
+  &={0.56\angle-105^{\circ}\over1-0.21\angle-180^{\circ}}=0.463\angle-105^{\circ}
+\end{align}
+
+\begin{align}
+  IL=-20\log(0.463)=6.69[dB], \quad \varphi=\arg(b_2/a_1)=-105^{\circ}
+\end{align}
+
+\section{A two-port network is characterized by the scattering matrix shown below:}
+
+\begin{align}
+  \underline{\underline{\vb{S}}}=
+  \begin{pmatrix}
+    {1+j\over2} & {1+j\over2}\\
+    {1-j\over2} & {1+j\over2}
+  \end{pmatrix}
+\end{align}
+
+Is the network lossless?
+
+\begin{align*}
+  S_{11}S_{12}^*+S_{21}S_{22}^*=1/4[(1+j)(1-j)+(1-j)(1-j)]=1/4[1+1+1-2j-1]=1/2(1-j)\neq0
+\end{align*}
+
+{\color{blue}Therefore, the network isn't lossless.}
+
+\section{Two identical reciprocal and lossless two-port networks are connected by a lossless transmission line of length $l$ (see Figure 1). The propagation constant of the line is $\beta$ and characteristic impedance is $Z_0$. Every two-port network is represented as shunt element $Y=jb$. The characteristic impedance of the ports is $Z_0$.}
+
+\begin{itemize}
+  \item [a)] Find the scattering matrix element $S_{11}$ of the system consisting of the two two-ports networks and the transmission line.
+
+  {\color{blue}The shunt element matrix can be presented like:}
+  \begin{align}
+    \underline{\underline{\vb{S}}}=
+    \begin{pmatrix}
+      1 & 0\\
+      jb & 1
+    \end{pmatrix}
+  \end{align}
+  {\color{blue}The transmission line section matrix can be presented like:}
+  \begin{align}
+    \underline{\underline{\vb{S}}}=
+    \begin{pmatrix}
+      \cos\theta & jZ_0\sin\theta\\
+      jY_0\sin\theta & \cos\theta
+    \end{pmatrix}, \quad \theta=\beta l
+  \end{align}
+  {\color{blue}The ABCD matrix of the equivalent circuit can be find in the next way:}
+  \begin{align}
+    \begin{pmatrix}
+      A & B\\
+      C & D
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      1 & 0\\
+      jb & 1
+    \end{pmatrix}
+    \begin{pmatrix}
+      \cos\theta & jZ_0\sin\theta\\
+      jY_0\sin\theta & \cos\theta
+    \end{pmatrix}
+    \begin{pmatrix}
+      1 & 0\\
+      jb & 1
+    \end{pmatrix}
+    \\
+    \begin{pmatrix}
+      A & B\\
+      C & D
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      1 & 0\\
+      jb & 1
+    \end{pmatrix}
+    \begin{pmatrix}
+      \cos\theta - bZ_0\sin\theta& jZ_0\sin\theta\\
+      j[Y_0\sin\theta+b\cos\theta] & \cos\theta
+    \end{pmatrix}
+    \\
+    \begin{pmatrix}
+      A & B\\
+      C & D
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      \cos\theta - bZ_0\sin\theta& jZ_0\sin\theta\\
+      j[Y_0\sin\theta+2b\cos\theta-Z_0b^2\sin\theta] & \cos\theta-bZ_0\sin\theta
+    \end{pmatrix}
+  \end{align}
+  \begin{align}
+    S_{11}&={A+B/Z_0-CZ_0-D\over A+B/Z_0+CZ_0+D}\\
+    S_{11}&={
+      \cos\theta-Z_0b\sin\theta+j(\sin\theta-2bZ_0\cos\theta+(Z_0b)^2\sin\theta-\sin\theta)-\cos\theta+Z_0b\sin\theta
+      \over
+      2(\cos\theta-Z_0b\sin\theta)+j[2\sin\theta+2bZ_0\cos\theta-(Z_0b)^2\sin\theta]
+    }
+    \\
+    S_{11}&={
+      j((Z_0b)^2\sin\theta-2bZ_0\cos\theta)
+      \over
+      2(\cos\theta-Z_0b\sin\theta)+j[2\sin\theta+2bZ_0\cos\theta-(Z_0b)^2\sin\theta]
+    }
+  \end{align}
+  \item [b)] Find the length $l$ of the transmission line section for which $|S_{11}|=0$ and express it using $Z_0, b, \beta$.
+  \begin{align}
+    S_{11}&=0\\
+    (Z_0b)^2\sin\theta-2bZ_0\cos\theta&=0\\
+    Z_0b\sin\theta-2\cos\theta=0\\
+    \tan\theta={2\over Z_0b}\\
+    l=1/\beta \arctan {2\over Z_0b}
+  \end{align}
+\end{itemize}
+
+\end{document}

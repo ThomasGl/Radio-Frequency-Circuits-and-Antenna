@@ -1,0 +1,516 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{paralist}
+\usepackage{listings}
+\usepackage{bookmark}
+\usepackage{physics}
+\usepackage{titling}
+\usepackage{xcolor}
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+
+\graphicspath{ {./files/} }
+
+\input{insbox}
+\usetikzlibrary{arrows, automata}
+
+\usepackage{geometry}
+
+\newgeometry{vmargin={20mm}, hmargin={15mm,17mm}}
+
+\makeatletter
+\pdfstringdefDisableCommands{\let\HyPsd@CatcodeWarning\@gobble}
+\makeatother
+
+\title{%
+  \Large $\textbf{Radio Frequency Circuits \& Antenna}$
+}
+\author{
+  $\textbf{Thomas Glezer}$\\\\
+  $\textbf{---}$\\\\
+  $\textbf{I.D. 967518150}$\\\\
+  $\textbf{---}$\\\\
+  $\textbf{Project: 2}$
+  \\\\
+}
+\date{\today}
+
+\begin{document}
+
+\begin{titlingpage}
+  \maketitle
+\end{titlingpage}
+
+\tableofcontents
+
+\pagebreak
+
+\begin{center}
+  \underline{\textbf{CST Project \#2 – Patch Antenna Simulation}}
+\end{center}
+
+In this project you will design and simulate a patch antenna and an array using CST. The antenna design is based on parameters that are given in the table below (each student has different design parameters!).
+
+Note the following definitions and remarks:
+
+\begin{itemize}
+  \item The microstrip antenna is a "planar antenna", meaning, implemented on a (relatively) thin grounded substrate. You are required to implement the antenna in the X-Y plane, meaning, the normal of the substrate plane is in the Z-axis direction.
+  \item $\theta$ is the angle between the z-axis and the X-Y plane.
+  \item $\varphi$ is defined as the angle between the X-axis and the Y-axis, in the X-Y plane.
+  \item $f$ is the center frequency of your design, as specified in the table below. Accordingly, $T$ is the time period: $T=1/f$.
+  \item The parameters of the antenna that are allowed to be fine tuned are only the size of the patch (its length and width), the feeding point of the patch antenna, the width of the microstrip lines and the diameter of the outer shield of the coax line. Also the thickness (height) of the dielectric substrate can be modified but it can have only integer values in mm units! (such as 1mm, 2mm, etc.).
+  \item Input matching, Return Loss, or $S_{11}$ in dB scale are all defined to be: $20\log|\Gamma|$, where $\Gamma$ is the reflection coefficient of the antenna.
+  \item Your submission should include each of the CST model files (optimized models, with configuration ready for simulations!), all of your Matlab code files and a final document that answers all the questions below, presents all the plots and describes the full design procedure of each of the models.
+\end{itemize}
+
+\textbf{From the given parameter table per student I.D. the ones used in the project are:}
+
+\vspace{2em}
+\begin{tabular}{| c | c | c | c |}
+  \hline
+  Dieletric Substrate & Frequency $f[GHz]$ & Array parameters & Polarization\\
+  \hline
+  Rogers Ultram 3850 & 4.7 & \shortstack{4 elements along the X-axis.\\ Spacing of $d=0.75\lambda$} &  \shortstack{Horizontal:\\ $E(\theta=0^{\circ},\varphi)=E_0\hat{x}$}\\
+  \hline
+\end{tabular}
+
+\vspace{1em}
+{\color{blue}The matrial requested for the substrate doesn't exists in CST enviornment, thus one with a very close dielectric constant was used: Rogers RT6202: $\varepsilon_r=2.94$, original $\varepsilon_r=2.9$.}
+
+\pagebreak
+
+\section{(5 points) Build a CST model of a 50[$\Omega$] coaxial line with an inner pin diameter of 1mm, and with a dielectric medium (in between the inner pin and the external shield) of a material named Teflon. The length of the coax cable should be two wavelengths (according to the frequency given in the table below). Place ports at the input and at the output of the coax line, with characteristic impedance (of the ports) according to that of the coax cable (as specified in the table) and simulate the 2ports S-Parameters over the frequency band of 0.7f -1.3f.}
+
+\begin{align}
+  Z &=
+  {1\over2\pi}
+  \sqrt{\mu\over\varepsilon}
+  \ln{b\over a}
+  \\
+  50
+  &=
+  {1\over2\pi}
+  120\pi
+  \sqrt{1\over2.1}
+  \ln{b\over 1}
+  \\
+  {
+    50
+    \over
+    60
+  }
+  \sqrt{2.1}
+  &=
+  \ln{b}
+  \\
+  1.2076
+  &=
+  \ln{b}
+  \\
+  e^{1.2076}
+  &=
+  {b}
+  \\
+  3.345
+  &=
+  b
+\end{align}
+
+\begin{align}
+  \lambda
+  &=
+  c/f\cdot{1\over\sqrt{2.1}}
+  =
+  {c\over 4.7\cdot10^9}{1\over\sqrt{2.1}}
+  =
+  0.044016266
+  =
+  44.016266[mm]
+  \\
+  L&=
+  2\lambda=
+  2\cdot44.016266
+  =
+  88.032532[mm]
+\end{align}
+
+\begin{itemize}
+  \item Optimize the parameters of the coax cable so that $S_{ii}$ ($S_{11}$ and $S_{22}$) will be below -25dB
+
+  {\color{blue}Initial design was already optimized}
+
+  \item What is the insertion loss of the cable at the frequency f?
+
+  {\color{blue} The insertion loss was -0.00845[dB]}
+
+  \item Present the S-Parameters results of the optimized cable over the given frequency band.
+
+  \includegraphics[width=\columnwidth]{images/q1_s_parameters.png}
+\end{itemize}
+
+\section{(15 points) Build a CST model of the patch antenna, according to the above guidelines and your patch antenna parameters in the table below. Use the designed coax cable in a length of a quarter wavelength in order to feed the patch antenna, without using a microstrip line: create a hole in the ground plane in a diameter which is identical to that of the shield of the coax cable, insert the edge of the coax cable into this hole, and extend the inner core of the coax above the ground plane so that it will touch the metal plate that implements the patch. Now, fine-tune the (allowed) parameters of the antenna in order to achieve a matching (Return Loss, or S11 in dB scale) of better than -10dB over the frequency band 0.98f -1.02f. Note that the impedance of the coax cable must remain 50[$\Omega$]!}
+
+\begin{align}
+  w&=
+  {
+    c
+    \over
+    2f\sqrt{\varepsilon_r+1\over2}
+  }
+  =
+  22.7226896[mm]
+\end{align}
+
+\begin{align}
+  \varepsilon_{eff}&=
+  {\varepsilon_r+1\over2}
+  +
+  {\varepsilon_r-1\over2\sqrt{1+12h/w}}
+  =
+  2.519822
+\end{align}
+
+\begin{align}
+  l&=
+  {c\over2f\sqrt{\varepsilon_r}}
+  -
+  0.824\cdot h
+  \cdot
+  \Bigl({
+    (\varepsilon_r+0.3)(w/h+0.264)
+    \over
+    (\varepsilon_r-0.258)(w/h+0.8)
+  }\Bigr)
+  =
+  16.3220145[mm]
+\end{align}
+
+\begin{itemize}
+  \item Present the input matching over the bandwidth 0.7f -1.3f. Use markers on the plot in order to demonstrate the achieved design goals.
+
+  {\color{blue} From requierment $0.98\cdot f=4.606[GHz], 1.02\cdot f=4.794[GHz]$}
+
+  \includegraphics[width=\columnwidth]{images/q2_s_paras.png}
+  \item Compare the optimized size of the patch to the theoretical one. If there is any difference, what is the reason for that?
+
+  {\color{blue}The differences are up to limitation in overflow computation and CST data handling capabilities. It seems to be something up to precision as a whole to adjust the central frequency and symmetrical behavior.}
+  \item Present the 3D far field radiation pattern of the patch antenna at the frequency f, and the radiation pattern over the 2 main planes: the Y-Z plane (“Elevation”) as a function of $\theta$, and the X-Z plane (“Azimuth”) as a function of $\varphi$.
+  
+  \begin{center}
+    3D plots:
+  \end{center}
+
+  \includegraphics[width=\columnwidth]{images/q2_3d_0.png}
+  \includegraphics[width=\columnwidth]{images/q2_3d_1.png}
+  \includegraphics[width=\columnwidth]{images/q2_3d_2.png}
+  \includegraphics[width=\columnwidth]{images/q2_3d_3.png}
+  \includegraphics[width=\columnwidth]{images/q2_3d_4.png}
+
+  \pagebreak
+  \begin{center}
+    Elevation
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q2_3d_theta.png}
+
+  \pagebreak
+  \begin{center}
+    Elevation directivity
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q2_3d_theta_directivity.png}
+
+
+  \pagebreak
+  \begin{center}
+    Azimuth
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q2_3d_phi.png}
+  \item What is the direction of the peak gain of the patch antenna, and what is the peak gain and directivity values? -- The ideal patch can have a gain of above 7.5dBi. Compare it to the gain of your patch and explain the differences. What is the antenna efficiency?
+
+  {\color{blue}Both peak directions of gain and directivity are at an angle of $3^\circ$ peak directivity is 8.05[dBi], peak gain is 7.98[dBi]. We actually get a better directivity but at the same time we are lossen on efficiency and side lobes being higher as well, so overall seems like a tradeoff. Antenna efficiency is 98.27\%.}
+
+
+
+  \item Present the surface currents on the patch antenna and on the ground plane at the time points t=0, t=T/4, t=T/2 and t=3T/4. Compare it to the expected results according to the theory and explain the differences, if those exist.
+
+  \begin{center}
+    Surface currents:
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q2_sc_0.png}
+  \includegraphics[width=\columnwidth]{images/q2_sc_1.png}
+  \includegraphics[width=\columnwidth]{images/q2_sc_2.png}
+  \includegraphics[width=\columnwidth]{images/q2_sc_3.png}
+
+  {\color{blue}From theory at time 0 and T/2 we would get 0 surface current at the patch, as the waves are the port, while at T/4 and 3T/4 we get positive direction then negative direction of current flows along the patch, we can also observe skin effect on the edges of the PEC in contact to the substrate material.}
+\end{itemize}
+
+\section{(5 points) Build a CST model of a 100$[\Omega]$ microstrip line that it is implemented on the same dielectric substrate as your optimized patch antenna. The length of the microstrip should be two wavelengths (according to the frequency given in the table below). Place wave ports at the input and at the output of the microstrip line and simulate the 2 ports S-Parameters over the frequency band of 0.7f -1.3f.}
+
+\begin{align}
+  \lambda=c/f\cdot{1\over\sqrt{2.94}}={c\over4.7\cdot10^9}\cdot{1\over\sqrt{2.94}}=37.2005345[mm]
+\end{align}
+
+\begin{itemize}
+  \item Optimize the parameters of the microstrip line so that Sii (S11 and S22) will be below - 25dB.
+
+  {\color{blue}Optimization was performed over the substrate width to better accomodate propagation.}
+  \item What is the insertion loss of the microstrip at the frequency $f$? -- compare it to that of the coax cable at the same length and explain the differences.
+
+  {\color{blue}The insertion loss is of -0.137315[dBi], which is more then a magnitude level difference in dB in comparing to the coax cable.}
+  \item Present the S-Parameters results of the optimized microstrip line at the given frequency band.
+
+  \includegraphics[width=\columnwidth]{images/q3_s_params.png}
+\end{itemize}
+
+\section{(15 points) In this section you are required to replace the coax feed with a microstrip feed for the patch antenna: feed the patch antenna that you designed in Section 2 using the microstrip line that you designed in Section 3. In this case, the microstrip line should have a length of a half wavelength. Place a lumped port on the far edge of the microstrip line in order to feed it. The impedance of the line must remain 100$[\Omega]$ and all the patch parameters (width, length, height of the substrate) must remain the same as in Section 2 above! If needed, a quarter wavelength transmission line can be designed in order to match the patch antenna to the 100$[\Omega]$ microstrip line. Other matching options of the patch antenna to the line can be used instead. Now, fine-tune the (allowed) parameters in order to achieve a matching (Return Loss, or $S_{11}$ in dB scale) of better than 10dB over the frequency band 0.98f - 1.02f.}
+
+\begin{itemize}
+  \item Present the input matching over the bandwidth 0.7f -1.3f. Use markers on the plot in order to demonstrate the achieved design goals.
+
+  \includegraphics[width=\columnwidth]{images/q4_s_params.png}
+  \item Present the 3D far field radiation pattern of the patch antenna at the frequency f, and the radiation pattern over the 2 main planes: the Y-Z plane ("Elevation") as a function of $\theta$, and the X-Z plane ("Azimuth") as a function of $\varphi$. Is there any difference comparing the radiation patterns that you got in Section 3? -- if there are, explain the differences.
+  
+  \begin{center}
+    3D plots:
+  \end{center}
+
+  \includegraphics[width=\columnwidth]{images/q4_3d_0.png}
+  \includegraphics[width=\columnwidth]{images/q4_3d_1.png}
+  \includegraphics[width=\columnwidth]{images/q4_3d_2.png}
+  \includegraphics[width=\columnwidth]{images/q4_3d_3.png}
+  \includegraphics[width=\columnwidth]{images/q4_3d_4.png}
+
+  \pagebreak
+  \begin{center}
+    Elevation
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q4_3d_theta.png}
+
+
+  \pagebreak
+  \begin{center}
+    Azimuth
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q4_3d_phi.png}
+
+  {\color{blue}Radiation pattern of section 3 wasn't recorded as it wasn't requested, but comparing to the section 2 we can see we get a shift in main lobe direction, we have a wider beamwidth and a reduced peak gain in the main lobe. Shape wise the are very similar in Elevation plane, but the Azimuthal plane is strongly shifted to accomodate this new component structure.}
+\end{itemize}
+
+\section{(60 points) In this section you are requested to use again the antenna that was optimized in Section 4 in order to implement an array as described in the table below. Follow the sections below:}
+
+\begin{itemize}
+  \item (5 points) Write down the expression for the normalized Array Factor of the array that you should implement. For your convenience, you can change the axis along which the array is implemented, as long as your final conclusion in the sections below remain correct. For example - it might be easier to set the array elements along the Z-axis.
+
+  {\color{blue}Computation was done for $\vu{x}$-direction as requested in the requierments table}
+  \begin{align}
+    AF(\varphi)
+    &=
+    {
+      \sin(N\psi/2)
+      \over
+      N\sin(\psi/2)
+    }
+    =
+    {
+      \sin(4\psi/2)
+      \over
+      4\sin(\psi/2)
+    }
+    \\
+    \psi
+    &=
+    kd\sin(\theta)\cos(\varphi)
+    =
+    {2\pi\over\lambda}(0.75\lambda)\sin(\theta)\cos(\varphi)
+    =
+    1.5\pi\sin(\theta)\cos(\varphi)
+    \\
+    AF(\psi)
+    &=
+    {
+      \sin(4\pi\cdot 1.5\sin(\theta)\cos(\varphi)/2)
+      \over
+      4\sin(1.5\pi\sin(\theta)\cos(\varphi)/2)
+    }
+    \\
+    AF(\psi)
+    &=
+    {
+      \sin(3\pi\sin(\theta)\cos(\varphi))
+      \over
+      4\sin(0.75\pi\sin(\theta)\cos(\varphi))
+    }
+  \end{align}
+
+  \item (5 points) Plot in Matlab the normalized array factor as a function of the observation angle for which the beam-width is set by the array size. Attach your code file to the solution.
+  
+  \includegraphics[width=\columnwidth]{q5_array_factor.png}
+
+  \item (5 points) Find the directivity of the array, assuming that it is implemented by isotropic elements. If an analytical solution is not trivial, a numerical integration is allowed, conditioned that you attach your code file to the solution.
+
+  \begin{align}
+    D
+    &=
+    {
+      U_{max}
+      \over
+      P_{rad}/4\pi
+    }
+  \end{align}
+  \begin{align}
+    P_{rad}
+    &=
+    \int\limits_{\varphi=0}^{2\pi}\int\limits_{\theta=0}^{\pi}U(\theta,\varphi)\sin\theta \,d \theta\,d\varphi
+    \\
+    P_{rad}
+    &=
+    \int\limits_{\varphi=0}^{2\pi}\int\limits_{\theta=0}^{\pi}AF^2(\theta,\varphi)\sin\theta \,d \theta\,d\varphi
+    \\
+    &=
+    \int\limits_{\varphi=0}^{2\pi}\int\limits_{\theta=0}^{\pi}
+    \Big({
+      \sin(3\pi\cdot \sin(\theta)\cos(\varphi))
+      \over
+      4\sin(0.75\pi\sin(\theta)\cos(\varphi))
+    }\Big)^2\sin\theta \,d \theta\,d\varphi
+  \end{align}
+
+  \begin{align}
+    D
+    &=
+    14.08[dBi]
+  \end{align}
+
+
+  \item (5 points) Calculate the required electrical phase $\Delta\phi$ that is required in order to steer the beam to an angle of $20^{\circ}$ along the array's axis. Note the configuration of your array (along the Z-axis or the Y-axis)!
+
+  \begin{align}
+    kd\cos(\varphi=20^{\circ})-\Delta\phi
+    &=
+    0
+    \\
+    \Delta\phi
+    &=
+    -kd\cdot0.9397
+    =
+    -{2\pi\over\lambda}(0.75\lambda)0.9397
+    =
+    -1.5\pi\cdot0.9397
+    \\
+    \Delta\phi
+    &=
+    -4.4282
+    \rightarrow
+    -180/\pi\cdot4.4282=-253.717^{\circ}
+    \\
+    \Delta\phi
+    &=
+    -253.717^{\circ}+360^\circ=106.283^\circ
+  \end{align}
+
+
+  \item (2 points) Plot in Matlab the normalized array factor as a function of the $\theta$ angle for the array that its beam is steered to the angle of $20^{\circ}$ along the array's axis. Attach your code file to the solution.
+
+  \includegraphics[width=\columnwidth]{q5_sterred_angle.png}
+
+  \item (15 points) Implement the array in CST by duplicating the single patch and its microstrip feed, according to the configuration of your array (elements number and polarization). If the substrate + metal ground planes of the patches are not overlapping, fill the entire gap with the same substrate + ground plane. Design the microstrip network so that all the patches will be fed by microstrip lines and the microstrip network will have a single feeding point that will be connected to a quarter wavelength $50[\Omega]$ coax line that you designed in Section 1. Simulate this structure while feeding all of the patches with the same electrical phase and plot the 3D radiation pattern, as well as 2D the radiation pattern in the azimuth and in the elevation.
+
+  \begin{center}
+    3D plots:
+  \end{center}
+
+  \includegraphics[width=\columnwidth]{images/q5_3d_0.png}
+  \includegraphics[width=\columnwidth]{images/q5_3d_1.png}
+  \includegraphics[width=\columnwidth]{images/q5_3d_2.png}
+  \includegraphics[width=\columnwidth]{images/q5_3d_3.png}
+  \includegraphics[width=\columnwidth]{images/q5_3d_4.png}
+
+  \pagebreak
+  \begin{center}
+    Elevation
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q5_theta.png}
+
+
+  \pagebreak
+  \begin{center}
+    Azimuth
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q5_phi.png}
+
+
+  \item (3 points) Compare the radiation pattern along the array's axis to the theoretical radiation pattern of the array factor. Explain the differences.
+
+  {\color{blue}We expected to see it based on the $0^\circ$ but from the feeding lines not being a perfect transformer we get these deviations.}
+
+  \item (5 points) Compare between the peak directivity and gain of the implemented array to the theoretical directivity and gain of the array of isotropic elements that you found above. What is the reason for the differences? Does it correspond with the expected results? What is the antenna efficiency?
+
+  {\color{blue}The efficiency is much better due to constructive interference same reasoning for the directivity being much higher. Antenna efficiency is of 98.39\%.}
+
+  \pagebreak
+  \begin{center}
+    Elevation directivity
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q5_directivity.png}
+
+  {\color{blue}}
+
+  \item (5 points) Present the input matching over the bandwidth 0.5f -2f of your array (as seen by the port at the input of the coax line). Use markers on the plot in order to demonstrate the achieved design goals -- matching of -10dB or better at the frequency range 0.98f-1.02f. What is the reason for the difference between this matching performance and the one of a single patch antenna that was implemented in Section 4?
+
+  \includegraphics[width=\columnwidth]{images/q5_s_params.png}
+
+  {\color{blue}Now the lines aren't matching all the way, a more accurate design would include making all the feeding lines into transformers to constantly adjust the matching while making enough space for propagation and assuring the desiered distance of $0.75\lambda$ between the patches.}
+
+
+  \item (5 points) Next, apply the electrical phase offset that you found ($\Delta\phi$) between one array's element port and its neighbor, in order to steer the beam to the mechanical (geometrical) angle of $20^{\circ}$ along the array's axis. Plot the 3D radiation pattern, as well as 2D the radiation pattern in the azimuth and in the elevation. Explain the results.
+
+
+  \begin{center}
+    3D plots:
+  \end{center}
+
+  \includegraphics[width=\columnwidth]{images/q5_phase_3d_0.png}
+  \includegraphics[width=\columnwidth]{images/q5_phase_3d_1.png}
+  \includegraphics[width=\columnwidth]{images/q5_phase_3d_2.png}
+  \includegraphics[width=\columnwidth]{images/q5_phase_3d_3.png}
+  \includegraphics[width=\columnwidth]{images/q5_phase_3d_4.png}
+
+  \pagebreak
+  \begin{center}
+    Elevation
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q5_phase_theta.png}
+
+
+  \pagebreak
+  \begin{center}
+    Azimuth
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q5_phase_phi.png}
+
+  {\color{blue}The shifted feeding point - which shifts the phase between each point in the transformer feeding - makes the main lobe shift and not necessarly the side lobes, making non-symmetrical and wierd shapes overall.}
+
+  \item (5 points) Present again the input matching over the bandwidth 0.5f -2f, when the monopoles are fed with a linear phase. Use markers on the plot in order to demonstrate the achieved design goals. What is the reason for the difference between this matching performance and the one of a single element in the array where no electrical phase was applied?
+
+  \pagebreak
+  \begin{center}
+    Elevation directivity
+  \end{center}
+  \includegraphics[width=\columnwidth]{images/q5_phase_s_params.png}
+
+  {\color{blue}No matching was expected, so this implementation is a forced angle shift. The break of symmetrical structure in the fedding of the Antenna assures the angle shift in a payout of drastically reducing s parameters.}
+
+\end{itemize}
+
+\end{document}
